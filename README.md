@@ -1,8 +1,8 @@
-contact-form-7-signature-addon
+Contact Form 7 Signature Addon
 ==============================
 
 This piece of code is an addon for the famous Contact Form 7 Wordpress plugin.
-It brings a new field type that allow users to submit an handwritten signature.
+It brings a new field type to forms that allows users to submit an handwritten signature.
 
 The plugin uses a Javascript library (https://github.com/szimek/signature_pad).
 
