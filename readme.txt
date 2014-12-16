@@ -6,13 +6,13 @@ Requires at least: 3.9
 Tested up to: 4.1
 Stable tag: 1.0
 
-Add a new field type to Contact Form 7 that allow users to submit an handwritten signature.
+Adds a new field type to Contact Form 7 that allow users to submit an handwritten signature.
 
 == Description ==
 
 ### Add a signature field to Contact Form 7
 
-This plugin adds a new field type to the Contact Form 7 plugin that allow users to add an handwritten signature to the message via a signature pad. The plugin uses a Javascript library (https://github.com/szimek/signature_pad).
+This plugin adds a new field type to the Contact Form 7 plugin and allows users to add an handwritten signature to the message via a signature pad. The plugin uses a Javascript library (https://github.com/szimek/signature_pad).
 
 This plugin requires version 3.9 or higher of the "Contact Form 7" plugin.
 
