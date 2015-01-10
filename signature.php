@@ -5,7 +5,7 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 1.0
+Version: 1.1
 */
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
