@@ -106,19 +106,17 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 	//print_r($tag);
 
 	$html = sprintf(
-		'<span class="wpcf7-form-control-wrap %1$s"><input %2$s id="%4$s"/>%3$s
-		<canvas id="wpcf7_signature" class="%4$s" width="%5$s" height="%6$s"></canvas><input id="%4$s_clear" type="button" value="%7$s"/></span>',
+		'<span class="wpcf7-form-control-wrap %1$s"><input %2$s id="wpcf7_%4$s_input"/>%3$s
+		<canvas id="wpcf7_%4$s_signature" class="%4$s" width="%5$s" height="%6$s"></canvas><input id="#wpcf7_%4$s_clear" type="button" value="%7$s"/></span>',
 		sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ) );
 
 	// script needs to be added for each signature field
 	$html .= '<script type="text/javascript">';
 	$html .= 'document.addEventListener("DOMContentLoaded", function(){';
-	$html .= 'var canvas = document.querySelector("#wpcf7_signature");';
+	$html .= 'var canvas = document.querySelector("#wpcf7_'.$tag->name.'_signature");';
 	$html .= 'var signaturePad = new SignaturePad(canvas);';
-	$html .= 'document.getElementById("'.$tag->name.'_clear").addEventListener("click", function(){signaturePad.clear();});';
-	$html .= 'var input_id = canvas.getAttribute("class");';
-	$html .= 'var input = document.getElementById(input_id);';
-	$html .= 'var form = input.form;';
+	$html .= 'document.getElementById("#wpcf7_'.$tag->name.'_clear").addEventListener("click", function(){signaturePad.clear();});';
+	$html .= 'var input = document.querySelector("#wpcf7_'.$tag->name.'_input");';
 	$html .= 'var submit = document.querySelector("input.wpcf7-submit");';
 	$html .= 'submit.onclick = function(){if (!signaturePad.isEmpty()){input.value = signaturePad.toDataURL();}else{input.value = "";}}';
 	$html .= '});';

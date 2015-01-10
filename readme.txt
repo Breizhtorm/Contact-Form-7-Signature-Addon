@@ -42,10 +42,17 @@ And voilà!
 
 == Changelog ==
 
+= 1.0.1 =
+* Bug fix : field configuration form not displaying in admin
+* Bug fix : Clear button not working
+* More than one signature field available in forms now
+
 = 1.0 =
 * Initial plugin release.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
 
 = 1.0 =
 * Initial plugin release.
