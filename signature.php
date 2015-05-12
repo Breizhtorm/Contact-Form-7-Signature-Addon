@@ -5,7 +5,7 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 1.1
+Version: 2.0
 */
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
@@ -202,5 +202,47 @@ function wpcf7_tg_pane_signature( ) {
 </div>
 <?php
 }
+
+/**
+* When form data is posted, we save the image somewhere in WP public directory
+* and change the posted value to the image URL
+*/
+function wpcf7_manage_signature ($posted_data) {
+
+	$dir = "/signatures";
+
+	foreach ($posted_data as $key => $data) {
+		if (strrpos($data, "data:image/png;base64", -strlen($data)) !== FALSE){
+	        $data_pieces = explode(",", $data);
+	        $encoded_image = $data_pieces[1];
+	        $decoded_image = base64_decode($encoded_image);
+
+	        $upload_dir = wp_upload_dir();
+	        $signature_dir = $upload_dir['basedir'].$dir;
+	        $signature_dir_url = $upload_dir['baseurl'].$dir;
+
+	        if( ! file_exists( $signature_dir ) ){
+	    		wp_mkdir_p( $signature_dir );
+	        }
+
+	        $filename = $key."-".time().".png";
+	        $filepath = $signature_dir."/".$filename;
+
+	        file_put_contents( $filepath,$decoded_image);
+
+	        if (file_exists($filepath)){
+	        	// File created : changing posted data to the URL instead of base64 encoded image data
+	        	$fileurl = $signature_dir_url."/".$filename;
+	        	
+        		$posted_data[$key] = $fileurl;
+	        }else{
+	        	error_log("Cannot create signature file in directory ".$filepath);
+	        }
+		}
+	}
+
+	return $posted_data;
+}
+add_filter( 'wpcf7_posted_data', 'wpcf7_manage_signature' );
 
 ?>

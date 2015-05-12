@@ -20,6 +20,6 @@ If you want the signature image to be included in the body of your mails, just p
 ```
 <img src="[your-signature-field]"/>
 ```
-Your contact form needs to send HTML messages, of course.
+Your contact form needs to send **HTML formatted** messages for it to work properly, so don't forget to check the corresponding box at the bottom of your email settings.
 
-And voilà!
+Important note : since version 2.0, the plugin no longer uses inline base64 encoded images, and signature images are saved to a "signatures/" subdir of your wordpress upload directory. So every email clients compatibility issues should be gone !
