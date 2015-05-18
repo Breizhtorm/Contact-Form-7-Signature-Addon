@@ -44,6 +44,13 @@ Important note : since version 2.0, the plugin no longer uses inline base64 enco
 
 == Frequently Asked Questions ==
 
+= I don't see the signature image in the mail. What can i do ? =
+
+First things first : verify that your email is sent in HTML format. In CF7, theres's a checkbox at the bottom of each mail configuration to do that.
+
+Then verify that the image is wrapped in an HTML image tag in your mail configuration, like this : 
+`<img src="[your-signature-field]"/>`
+
 == Changelog ==
 
 = 2.1 =
