@@ -4,7 +4,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.2
-Stable tag: 2.0
+Stable tag: 2.1
 
 Adds a new field type to Contact Form 7 that allow users to submit an handwritten signature.
 
@@ -45,6 +45,9 @@ Important note : since version 2.0, the plugin no longer uses inline base64 enco
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 2.1 =
+* Fixed a bug where only the last signature of a form was sent
 
 = 2.0 =
 * Signature are now stored as image files for a better compatibility with email clients
