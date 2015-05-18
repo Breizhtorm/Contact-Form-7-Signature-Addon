@@ -103,7 +103,7 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 
 	$atts = wpcf7_format_atts( $atts );
 
-	//print_r($tag);
+	$sigid = str_replace("-","_",sanitize_html_class( $tag->name ));
 
 	$html = sprintf(
 		'<span class="wpcf7-form-control-wrap %1$s"><input %2$s id="wpcf7_%4$s_input"/>%3$s
@@ -113,12 +113,12 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 	// script needs to be added for each signature field
 	$html .= '<script type="text/javascript">';
 	$html .= 'document.addEventListener("DOMContentLoaded", function(){';
-	$html .= 'var canvas = document.querySelector("#wpcf7_'.$tag->name.'_signature");';
-	$html .= 'var signaturePad = new SignaturePad(canvas);';
-	$html .= 'document.getElementById("#wpcf7_'.$tag->name.'_clear").addEventListener("click", function(){signaturePad.clear();});';
-	$html .= 'var input = document.querySelector("#wpcf7_'.$tag->name.'_input");';
+	$html .= 'var canvas_'.$sigid.' = document.querySelector("#wpcf7_'.$tag->name.'_signature");';
+	$html .= 'var signaturePad_'.$sigid.' = new SignaturePad(canvas_'.$sigid.');';
+	$html .= 'document.getElementById("#wpcf7_'.$tag->name.'_clear").addEventListener("click", function(){signaturePad_'.$sigid.'.clear();});';
+	$html .= 'var input_'.$sigid.' = document.querySelector("#wpcf7_'.$tag->name.'_input");';
 	$html .= 'var submit = document.querySelector("input.wpcf7-submit");';
-	$html .= 'submit.onclick = function(){if (!signaturePad.isEmpty()){input.value = signaturePad.toDataURL();}else{input.value = "";}}';
+	$html .= 'submit.addEventListener("click", function(){if (!signaturePad_'.$sigid.'.isEmpty()){input_'.$sigid.'.value = signaturePad_'.$sigid.'.toDataURL();}else{input_'.$sigid.'.value = "";}}, false)';
 	$html .= '});';
 	$html .= '</script>';
 
