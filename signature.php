@@ -5,7 +5,7 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.1
+Version: 2.2
 */
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
@@ -115,7 +115,7 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 	$html .= 'document.addEventListener("DOMContentLoaded", function(){';
 	$html .= 'var canvas_'.$sigid.' = document.querySelector("#wpcf7_'.$tag->name.'_signature");';
 	$html .= 'var signaturePad_'.$sigid.' = new SignaturePad(canvas_'.$sigid.');';
-	$html .= 'document.getElementById("#wpcf7_'.$tag->name.'_clear").addEventListener("click", function(){signaturePad_'.$sigid.'.clear();});';
+	$html .= 'document.getElementById("#wpcf7_'.$tag->name.'_clear").addEventListener("click", function(){signaturePad_'.$sigid.'.clear();input_'.$sigid.'.value = "";});';
 	$html .= 'var input_'.$sigid.' = document.querySelector("#wpcf7_'.$tag->name.'_input");';
 	$html .= 'var submit = document.querySelector("input.wpcf7-submit");';
 	$html .= 'submit.addEventListener("click", function(){if (!signaturePad_'.$sigid.'.isEmpty()){input_'.$sigid.'.value = signaturePad_'.$sigid.'.toDataURL();}else{input_'.$sigid.'.value = "";}}, false)';
@@ -132,6 +132,7 @@ add_filter( 'wpcf7_validate_signature', 'wpcf7_signature_validation_filter', 10,
 add_filter( 'wpcf7_validate_signature*', 'wpcf7_signature_validation_filter', 10, 2 );
 
 function wpcf7_signature_validation_filter( $result, $tag ) {
+
 	$tag = new WPCF7_Shortcode( $tag );
 
 	$name = $tag->name;
@@ -142,13 +143,8 @@ function wpcf7_signature_validation_filter( $result, $tag ) {
 
 	if ( 'signature*' == $tag->type ) {
 		if ( '' == $value ) {
-			$result['valid'] = false;
-			$result['reason'][$name] = wpcf7_get_message( 'invalid_required' );
+			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
 		}
-	}
-
-	if ( isset( $result['reason'][$name] ) && $id = $tag->get_id_option() ) {
-		$result['idref'][$name] = $id;
 	}
 
 	return $result;
@@ -212,7 +208,7 @@ function wpcf7_manage_signature ($posted_data) {
 	$dir = "/signatures";
 
 	foreach ($posted_data as $key => $data) {
-		if (strrpos($data, "data:image/png;base64", -strlen($data)) !== FALSE){
+		if (is_string($data) && strrpos($data, "data:image/png;base64", -strlen($data)) !== FALSE){
 	        $data_pieces = explode(",", $data);
 	        $encoded_image = $data_pieces[1];
 	        $decoded_image = base64_decode($encoded_image);
