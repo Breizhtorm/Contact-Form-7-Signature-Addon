@@ -23,3 +23,5 @@ If you want the signature image to be included in the body of your mails, just p
 Your contact form needs to send **HTML formatted** messages for it to work properly, so don't forget to check the corresponding box at the bottom of your email settings.
 
 Important note : since version 2.0, the plugin no longer uses inline base64 encoded images, and signature images are saved to a "signatures/" subdir of your wordpress upload directory. So every email clients compatibility issues should be gone !
+
+Super important note : Version 2.3 is only meant to work with CF7 v4.2 and higher. Keep a good old 2.2 version of the plugin if don't have CF7 4.2 or higher installed.

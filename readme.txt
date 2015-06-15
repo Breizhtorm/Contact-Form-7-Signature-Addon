@@ -4,9 +4,10 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.2
-Stable tag: 2.1
+Stable tag: 2.3
 
-Adds a new field type to Contact Form 7 that allow users to submit an handwritten signature.
+Adds an handwritten signature field type to Contact Form 7.
+Version 2.3 is for CF7 4.2 or higher only. Keep version 2.2 otherwise.
 
 == Description ==
 
@@ -15,6 +16,7 @@ Adds a new field type to Contact Form 7 that allow users to submit an handwritte
 This plugin adds a new field type to the Contact Form 7 plugin and allows users to add an handwritten signature to the message via a signature pad. The plugin uses a Javascript library (https://github.com/szimek/signature_pad).
 
 This plugin requires version 3.9 or higher of the "Contact Form 7" plugin.
+**Version 2.3 of this plugin is for CF7 4.2 or higher only. Use version 2.2 otherwise.**
 
 Please read the installation notes for more details.
 
@@ -35,7 +37,9 @@ If you want the signature image to be included in the body of your emails, just 
 
 Your contact form needs to send **HTML formatted** messages for it to work properly, so don't forget to check the corresponding box at the bottom of your email settings.
 
-Important note : since version 2.0, the plugin no longer uses inline base64 encoded images, and signature images are saved to a "signatures/" subdir of your wordpress upload directory. So every email clients compatibility issues should be gone !
+**Important note** : since version 2.0, the plugin no longer uses inline base64 encoded images, and signature images are saved to your wordpress upload directory. So every email clients compatibility issues should be gone !
+
+**Super important note** : Version 2.3 is only meant to work with CF7 v4.2 and higher. Keep a good old 2.2 version of the plugin if don't have CF7 4.2 or higher installed.
 
 == Screenshots ==
 
@@ -52,6 +56,13 @@ Then verify that the image is wrapped in an HTML image tag in your mail configur
 `<img src="[your-signature-field]"/>`
 
 == Changelog ==
+
+= 2.3 =
+* Fixed the plugin to match the new CF7 4.2 code and UI
+* Fixed a bug with signature clearing and form validation
+
+= 2.2 =
+* Fixed a bug where CF7 form submission was blocked sometimes
 
 = 2.1 =
 * Fixed a bug where only the last signature of a form was sent
