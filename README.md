@@ -22,6 +22,8 @@ If you want the signature image to be included in the body of your mails, just p
 ```
 Your contact form needs to send **HTML formatted** messages for it to work properly, so don't forget to check the corresponding box at the bottom of your email settings.
 
+[Wordpress plugin repository](http://wordpress.org/plugins/contact-form-7-signature-addon)
+
 # Notes
 
 ## Important change since version 2.0
