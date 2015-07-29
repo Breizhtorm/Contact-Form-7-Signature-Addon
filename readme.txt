@@ -4,7 +4,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.2
-Stable tag: 2.3
+Stable tag: 2.4
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -15,8 +15,7 @@ Easily add an handwritten signature field to Contact Form 7
 This plugin adds a new field type to the Contact Form 7 plugin and allows users to add an handwritten signature to the message via a signature pad. The plugin uses Szymon Nowak's great Javascript library (https://github.com/szimek/signature_pad).
 
 = Important Note =
-This plugin requires version 3.9 or higher of the "Contact Form 7" plugin.
-Version 2.3 of this plugin is for CF7 4.2 or higher only. Use [version 2.2](http://downloads.wordpress.org/plugin/contact-form-7-signature-addon.2.2.zip) otherwise.
+This plugin requires version 3.5 or higher of the "Contact Form 7" plugin.
 
 Please read the [installation notes](http://wordpress.org/plugins/contact-form-7-signature-addon/installation/) for more details.
 
@@ -39,8 +38,6 @@ Your contact form needs to send **HTML formatted** messages for it to work prope
 
 **Important note** : since version 2.0, the plugin no longer uses inline base64 encoded images, and signature images are saved to your wordpress upload directory. So every email clients compatibility issues should be gone !
 
-**Super important note** : Version 2.3 is only meant to work with CF7 v4.2 and higher. Keep a good old 2.2 version of the plugin if don't have CF7 4.2 or higher installed.
-
 == Screenshots ==
 
 1. Signature field configuration
@@ -57,14 +54,21 @@ Then verify that the image is wrapped in an HTML image tag in your mail configur
 
 = How do i add styles to my signature field ? =
 
-Use CSS like you could do for the rest of the form, using the field's id and classes. For example, if your field name is "signature-test", you can do something like this : 
+Use CSS like you could do for the rest of the form, using the field's id and classes. 
+For example, if your field name is "signature-test", you can do something like this : 
 `
-.signature-test canvas{
+.wpcf7-form-control-signature-wrap canvas{
 	border: 1px dotted #BADA55;
 }
 `
 
 == Changelog ==
+
+= 2.4 =
+* Fixed CF7 older versions compatibility issues (down to at least CF7 v3.5)
+* Removed useless plugin own css
+* New CSS class added around the signature field for easier styling
+* Updated screenshots, FAQ and Readme
 
 = 2.3 =
 * Fixed the plugin to match the new CF7 4.2 code and UI

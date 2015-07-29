@@ -30,4 +30,4 @@ Your contact form needs to send **HTML formatted** messages for it to work prope
 Since version 2.0, the plugin no longer uses inline base64 encoded images, and signature images are saved to a "signatures/" subdir of your wordpress upload directory. So every email clients compatibility issues should be gone !
 
 ## CF7 Version compatibility
-Version 2.3 of this plugin is only meant to work with CF7 v4.2 and higher. Keep a good old 2.2 version of the plugin if don't have CF7 4.2 or higher installed.
+This plugin was tested with CF7 versions down to 3.5. Use it with older versions at your own risk.

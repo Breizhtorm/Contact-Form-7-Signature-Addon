@@ -5,7 +5,7 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.3
+Version: 2.4
 */
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
@@ -31,15 +31,6 @@ function contact_form_7_signature_fields() {
 }
 
 load_plugin_textdomain('wpcf7-signature', false, basename( dirname( __FILE__ ) ) . '/languages' );
-
-/**
- * Register with hook 'wp_enqueue_scripts', which can be used for front end CSS and JavaScript
- */
-add_action( 'wp_enqueue_scripts', 'signature_add_stylesheets' );
-function signature_add_stylesheets() {
-	wp_register_style( 'signature', plugins_url( 'signature.css' , __FILE__ ) );
-	wp_enqueue_style( 'signature' );
-}
 
 add_action( 'wpcf7_init', 'wpcf7_add_shortcode_signature' );
 function wpcf7_add_shortcode_signature() {
@@ -106,7 +97,7 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 	$sigid = str_replace("-","_",sanitize_html_class( $tag->name ));
 
 	$html = sprintf(
-		'<span class="wpcf7-form-control-wrap %1$s"><input %2$s id="wpcf7_%4$s_input"/>%3$s
+		'<span class="wpcf7-form-control-wrap wpcf7-form-control-signature-wrap %1$s"><input %2$s id="wpcf7_%4$s_input"/>%3$s
 		<canvas id="wpcf7_%4$s_signature" class="%4$s" width="%5$s" height="%6$s"></canvas><input id="#wpcf7_%4$s_clear" type="button" value="%7$s"/></span>',
 		sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ) );
 
@@ -156,81 +147,123 @@ function wpcf7_signature_validation_filter( $result, $tag ) {
 
 /* Tag generator */
 
-add_action( 'admin_init', 'wpcf7_add_tag_generator_signature', 15 );
+add_action( 'admin_init', 'wpcf7_add_tag_generator_signature', 60 );
 
 function wpcf7_add_tag_generator_signature() {
 
-	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->add( 'signature', __( 'signature', 'contact-form-7' ),
-		'wpcf7_tag_generator_signature' );
+	if (class_exists('WPCF7_TagGenerator')) {
+		$tag_generator = WPCF7_TagGenerator::get_instance();
+		$tag_generator->add( 'signature', __( 'signature', 'contact-form-7' ),'wpcf7_tag_generator_signature' );
+	} else if (function_exists('wpcf7_add_tag_generator')) {
+		wpcf7_add_tag_generator( 'signature', __( 'Signature', 'wpcf7' ), 'wpcf7-tg-pane-signature', 'wpcf7_tag_generator_signature' );
+	}
+	
 }
 
 function wpcf7_tag_generator_signature( $contact_form, $args = '' ) {
 
-	$args = wp_parse_args( $args, array() );
-	$type = 'signature';
+	if (class_exists('WPCF7_TagGenerator')) {
+		$args = wp_parse_args( $args, array() );
+		$type = 'signature';
 
-	$description = __( "Generate a form-tag for a signature field.", 'contact-form-7' );
-?>
-<div class="control-box">
-<fieldset>
-<legend><?php echo sprintf( esc_html( $description ) ); ?></legend>
-<table class="form-table">
-<tbody>
-	<tr>
-	<th scope="row"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></th>
-	<td>
+		$description = __( "Generate a form-tag for a signature field.", 'contact-form-7' );
+		?>
+		<div class="control-box">
 		<fieldset>
-		<legend class="screen-reader-text"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></legend>
-		<label><input type="checkbox" name="required" /> <?php echo esc_html( __( 'Required field', 'contact-form-7' ) ); ?></label>
+		<legend><?php echo sprintf( esc_html( $description ) ); ?></legend>
+		<table class="form-table">
+		<tbody>
+			<tr>
+			<th scope="row"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></th>
+			<td>
+				<fieldset>
+				<legend class="screen-reader-text"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></legend>
+				<label><input type="checkbox" name="required" /> <?php echo esc_html( __( 'Required field', 'contact-form-7' ) ); ?></label>
+				</fieldset>
+			</td>
+			</tr>
+
+			<tr>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?></label></th>
+			<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
+			</tr>
+
+			<tr>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-id' ); ?>"><?php echo esc_html( __( 'Id attribute', 'contact-form-7' ) ); ?></label></th>
+			<td><input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-id' ); ?>" /></td>
+			</tr>
+
+			<tr>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-class' ); ?>"><?php echo esc_html( __( 'Class attribute', 'contact-form-7' ) ); ?></label></th>
+			<td><input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-class' ); ?>" /></td>
+			</tr>
+
+			<tr>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-width' ); ?>"><?php echo esc_html( __( 'Width attribute', 'contact-form-7' ) ); ?></label></th>
+			<td><input type="number" name="cols" class="widthvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-width' ); ?>" /></td>
+			</tr>
+
+			<tr>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-height' ); ?>"><?php echo esc_html( __( 'Height attribute', 'contact-form-7' ) ); ?></label></th>
+			<td><input type="number" name="rows" class="heightvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-height' ); ?>" /></td>
+			</tr>
+
+		</tbody>
+		</table>
 		</fieldset>
-	</td>
-	</tr>
+		</div>
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
-	</tr>
+		<div class="insert-box">
+			<input type="text" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-id' ); ?>"><?php echo esc_html( __( 'Id attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-id' ); ?>" /></td>
-	</tr>
+			<div class="submitbox">
+			<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'contact-form-7' ) ); ?>" />
+			</div>
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-class' ); ?>"><?php echo esc_html( __( 'Class attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-class' ); ?>" /></td>
-	</tr>
+			<br class="clear" />
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-width' ); ?>"><?php echo esc_html( __( 'Width attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="number" name="cols" class="widthvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-width' ); ?>" /></td>
-	</tr>
+			<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag (%s) into the field on the Mail tab.", 'contact-form-7' ) ), '<strong><span class="mail-tag"></span></strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
+		</div>
+		<?php
+	}else{
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-height' ); ?>"><?php echo esc_html( __( 'Height attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="number" name="rows" class="heightvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-height' ); ?>" /></td>
-	</tr>
+		// For older CF7 versions
+		?>
 
-</tbody>
-</table>
-</fieldset>
-</div>
+		<div id="wpcf7-tg-pane-signature" class="hidden">
+			<form action="">
+			<table>
+				<tr><td><input type="checkbox" name="required" />&nbsp;<?php echo esc_html( __( 'Required field?', 'contact-form-7' ) ); ?></td></tr>
+				<tr><td><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?><br /><input type="text" name="name" class="tg-name oneline" /></td><td></td></tr>
+			</table>
 
-<div class="insert-box">
-	<input type="text" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
+			<table>
+				<tr>
+					<td><code>id</code> (<?php echo esc_html( __( 'optional', 'contact-form-7' ) ); ?>)<br />
+					<input type="text" name="id" class="idvalue oneline option" /></td>
 
-	<div class="submitbox">
-	<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'contact-form-7' ) ); ?>" />
-	</div>
+					<td><code>class</code> (<?php echo esc_html( __( 'optional', 'contact-form-7' ) ); ?>)<br />
+					<input type="text" name="class" class="classvalue oneline option" /></td>
+				</tr>
 
-	<br class="clear" />
+				<tr>
+					<td><code>width</code> (<?php echo esc_html( __( 'optional', 'contact-form-7' ) ); ?>)<br />
+					<input type="number" name="cols" class="numeric oneline option" min="1" /></td>
 
-	<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag (%s) into the field on the Mail tab.", 'contact-form-7' ) ), '<strong><span class="mail-tag"></span></strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
-</div>
+					<td><code>height</code> (<?php echo esc_html( __( 'optional', 'contact-form-7' ) ); ?>)<br />
+					<input type="number" name="rows" class="numeric oneline option" min="1" /></td>
+				</tr>
 
+			</table>
 
-<?php
+			<div class="tg-tag"><?php echo esc_html( __( "Copy this code and paste it into the form left.", 'contact-form-7' ) ); ?><br /><input type="text" name="signature" class="tag wp-ui-text-highlight code" readonly="readonly" onfocus="this.select()" /></div>
+
+			<div class="tg-mail-tag"><?php echo esc_html( __( "And, put this code into the Mail fields below.", 'contact-form-7' ) ); ?><br /><input type="text" class="mail-tag wp-ui-text-highlight code" readonly="readonly" onfocus="this.select()" /></div>
+			</form>
+		</div>
+
+		<?php
+	}
 }
 
 /**
