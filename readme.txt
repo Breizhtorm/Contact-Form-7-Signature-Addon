@@ -55,7 +55,7 @@ First things first : verify that your email is sent in HTML format. In CF7, ther
 Then verify that the image is wrapped in an HTML image tag in your mail configuration, like this :
 `<img src="[your-signature-field]"/>`
 
-= How do i add styles to my signature field =
+= How do i add styles to my signature field ? =
 
 Use CSS like you could do for the rest of the form, using the field's id and classes. For example, if your field name is "signature-test", you can do something like this : 
 `
