@@ -54,8 +54,8 @@ Then verify that the image is wrapped in an HTML image tag in your mail configur
 
 = How do i add styles to my signature field ? =
 
-Use CSS like you could do for the rest of the form, using the field's id and classes. 
-For example, if your field name is "signature-test", you can do something like this : 
+Use CSS like you would do for any other field in your form. 
+For example, using the field wrapper, you can add a border like this : 
 `
 .wpcf7-form-control-signature-wrap canvas{
 	border: 1px dotted #BADA55;
