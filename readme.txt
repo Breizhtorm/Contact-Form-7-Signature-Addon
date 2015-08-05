@@ -4,7 +4,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.2
-Stable tag: 2.4
+Stable tag: 2.4.1
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -63,6 +63,9 @@ For example, using the field wrapper, you can add a border like this :
 `
 
 == Changelog ==
+
+= 2.4.1 =
+* Fixed a major issue where mandatory signature fields were note validating correctly (since CF7 4.1)
 
 = 2.4 =
 * Fixed CF7 older versions compatibility issues (down to at least CF7 v3.5)

@@ -5,7 +5,7 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.4
+Version: 2.4.1
 */
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
@@ -133,8 +133,13 @@ function wpcf7_signature_validation_filter( $result, $tag ) {
 
 	if ( 'signature*' == $tag->type ) {
 		if ( '' == $value ) {
-			$result['valid'] = false;
-			$result['reason'][$name] = wpcf7_get_message( 'invalid_required' );
+			if (method_exists($result,"invalidate")){
+				$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
+				return $result;
+			}else{
+				$result['valid'] = false;
+				$result['reason'][$name] = wpcf7_get_message( 'invalid_required' );
+			}
 		}
 	}
 
