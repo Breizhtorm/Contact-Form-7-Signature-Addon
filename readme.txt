@@ -3,8 +3,8 @@ Plugin URI: http://www.breizhtorm.fr/blog/
 Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
-Tested up to: 4.2
-Stable tag: 2.4.1
+Tested up to: 4.3
+Stable tag: 2.5
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -16,8 +16,15 @@ This plugin adds a new field type to the Contact Form 7 plugin and allows users 
 
 = Important Note =
 This plugin requires version 3.5 or higher of the "Contact Form 7" plugin.
+It works on almost every modern web browser (IE9+, ...)
 
-Please read the [installation notes](http://wordpress.org/plugins/contact-form-7-signature-addon/installation/) for more details.
+= Installation / Support =
+Please read the [installation notes](http://wordpress.org/plugins/contact-form-7-signature-addon/installation/) for details.
+
+You can ask for support [here](http://wordpress.org/support/plugin/contact-form-7-signature-addon), and if you're new to web development and Wordpress things, i think you should have a look at [this article](http://www.wpbeginner.com/beginners-guide/how-to-properly-ask-for-wordpress-support-and-get-it/) first.
+
+= Be kind =
+This plugin is just sharing something i needed for a project, there's nothing commercial in there. But i'll listen to your requests and do my best to keep the plugin up to date anyway.
 
 Don't forget to rate the plugin if you like it (or not).
 
@@ -62,7 +69,27 @@ For example, using the field wrapper, you can add a border like this :
 }
 `
 
+= How do i make my signature field responsive ? =
+
+It depends on your form layout but once again, you can do this by using basic CSS instructions. The plugin will deal with window size and device orientation changes by automatically updating itself to match the right size (and clearing the field content). 
+`
+@media screen and (max-width: 768px) {
+    .wpcf7-form-control-signature-wrap canvas{
+        width:100%;
+        height:100%;
+    }
+}
+...
+`
+
 == Changelog ==
+
+= 2.5 =
+* Updated signature pad library to v1.4.0
+* Fixed a bug with device ratio not being properly taken into account sometimes
+* Fixed a bug where signature fields were not cleared after successful submit
+* Fixed a bug where cleared signature fields were not correctly validating
+* Refactored JavaScript for easier plugin maintenance
 
 = 2.4.1 =
 * Fixed a major issue where mandatory signature fields were note validating correctly (since CF7 4.1)
