@@ -21,12 +21,9 @@ If you want the signature image to be included in the body of your emails, just 
 
 Your contact form needs to send **HTML formatted** messages for it to work properly, so don't forget to check the corresponding box at the bottom of your email settings.
 
-[Wordpress plugin repository](http://wordpress.org/plugins/contact-form-7-signature-addon)
+For release notes and more, please check the [Wordpress plugin repository](http://wordpress.org/plugins/contact-form-7-signature-addon)
 
 # Notes
-
-## Important change since version 2.0
-Since version 2.0, the plugin no longer uses inline base64 encoded images, and signature images are saved to a "signatures/" subdir of your wordpress upload directory. So every email clients compatibility issues should be gone !
 
 ## CF7 Version compatibility
 This plugin was tested with CF7 versions down to 3.5. Use it with older versions at your own risk.
