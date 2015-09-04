@@ -5,8 +5,10 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.5
+Version: 2.6
 */
+
+define('WPCF7SIG_VERSION',"2.6");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -41,9 +43,12 @@ function wpcf7_add_shortcode_signature() {
 
 function wpcf7_signature_shortcode_handler( $tag ) {
 
+	// loading signature stylesheets
+	wp_enqueue_style( 'signature-styles', plugins_url( 'signature.css' , __FILE__ ), array(), WPCF7SIG_VERSION, 'all' );
+
 	// loading signature javascript
-	wp_enqueue_script('signature-pad',plugins_url( 'signature_pad.min.js' , __FILE__ ),array(),'1.0',false);
-	wp_enqueue_script('signature-scrips',plugins_url( 'scripts.js' , __FILE__ ),array(),'1.0',false);
+	wp_enqueue_script('signature-pad',plugins_url( 'signature_pad.min.js' , __FILE__ ),array(),WPCF7SIG_VERSION,false);
+	wp_enqueue_script('signature-scrips',plugins_url( 'scripts.js' , __FILE__ ),array(),WPCF7SIG_VERSION,false);
 
 	$tag = new WPCF7_Shortcode( $tag );
 
@@ -97,8 +102,20 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 	$sigid = str_replace("-","_",sanitize_html_class( $tag->name ));
 
 	$html = sprintf(
-		'<span class="wpcf7-form-control-wrap wpcf7-form-control-signature-wrap %1$s"><input %2$s id="wpcf7_%4$s_input"/>%3$s
-		<canvas id="wpcf7_%4$s_signature" class="%4$s" width="%5$s" height="%6$s"></canvas><input id="wpcf7_%4$s_clear" type="button" value="%7$s"/></span>',
+		'<div class="wpcf7-form-control-signature-global-wrap" data-field-id="%1$s">
+			<div class="wpcf7-form-control-signature-wrap" style="width:%5$spx;height:%6$spx;">
+				<div class="wpcf7-form-control-signature-body">
+					<canvas id="wpcf7_%4$s_signature" class="%4$s"></canvas>
+				</div>
+			</div>
+			<div class="wpcf7-form-control-clear-wrap">
+				<input id="wpcf7_%4$s_clear" type="button" value="%7$s"/>
+			</div>
+		</div>
+		<span class="wpcf7-form-control-wrap wpcf7-form-control-signature-input-wrap %1$s">
+			<input %2$s id="wpcf7_input_%1$s"/>%3$s
+		</span>
+		',
 		sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ) );
 
 	return $html;

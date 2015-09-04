@@ -1,16 +1,18 @@
 var signatures = [];
 
-window.onresize = sigFieldsResize;
+//window.onresize = sigFieldsResize;
 
 document.addEventListener("DOMContentLoaded", function(){
 
-	var wrappers = document.querySelectorAll(".wpcf7-form-control-signature-wrap");
+	var wrappers = document.querySelectorAll(".wpcf7-form-control-signature-global-wrap");
 	Array.prototype.forEach.call(wrappers, function(wrapper, i){
 
 		var canvas = wrapper.querySelector("canvas");
-		var input = wrapper.querySelector("input[type=hidden]");
 		var clear = wrapper.querySelector("input[type=button]");
 		var submit = document.querySelector("input.wpcf7-submit");
+
+		var id = wrapper.getAttribute("data-field-id");
+		var input = document.getElementById("wpcf7_input_" + id);
 
 		// Canvas init
 		var signature = new SignaturePad(canvas);
@@ -34,9 +36,7 @@ document.addEventListener("DOMContentLoaded", function(){
 		
 		// Prepare for resize
 		sigFieldResize(i);
-
 	});
-
 });
 
 // Clear a single signature field
@@ -44,7 +44,6 @@ function sigFieldClear(index){
 
 	signatures[index].signature.clear();
 	signatures[index].input.value= "";
-
 }
 
 // Dealing with window size and device ratio
@@ -63,7 +62,7 @@ function sigFieldResize(index){
 // Global resize management
 function sigFieldsResize(){
 
-	var elements = document.querySelectorAll("input.wpcf7-signature");
+	var elements = document.querySelectorAll(".wpcf7-form-control-signature-input-wrap");
 	Array.prototype.forEach.call(elements, function(el, i){
 
 		sigFieldResize(i);
@@ -74,11 +73,10 @@ function sigFieldsResize(){
 // Globally clear fields on form submit
 function sigFieldsClear(){
 	
-	var elements = document.querySelectorAll("input.wpcf7-signature");
+	var elements = document.querySelectorAll(".wpcf7-form-control-signature-input-wrap");
 	Array.prototype.forEach.call(elements, function(el, i){
 		
 		sigFieldClear(i);
 
 	});
-
 }
