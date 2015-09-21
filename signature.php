@@ -5,10 +5,10 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.6.1
+Version: 2.6.2
 */
 
-define('WPCF7SIG_VERSION',"2.6.1");
+define('WPCF7SIG_VERSION',"2.6.2");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -176,9 +176,13 @@ function filter_wpcf7_contact_form_properties( $properties, $instance )
 			//Let's add the callback if needed
 		   	$JSCallback = "sigFieldsClear();";
 		   	$settings = $properties['additional_settings'];
-		   	$pos = strrpos($settings, ";");
+
+	    	// Because of buggy 2.5/2.6, we have to first get rid of every callback call
+	    	$settings = str_replace($JSCallback,"",$settings);
 
 		    if(!strpos($settings, $JSCallback) !== false){
+		   	
+		    	$pos = strrpos($settings, ";");
 		    	if($pos !== false)
 			    {
 			        $settings = substr_replace($settings, $JSCallback, $pos + 1, 0);
