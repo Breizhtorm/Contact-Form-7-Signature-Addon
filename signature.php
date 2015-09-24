@@ -5,10 +5,10 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.6.2
+Version: 2.6.3
 */
 
-define('WPCF7SIG_VERSION',"2.6.2");
+define('WPCF7SIG_VERSION',"2.6.3");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -67,8 +67,6 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 	$width = $tag->get_cols_option( '300' );
 	$height = $tag->get_rows_option( '200' );
 
-	$atts['class'] = $tag->get_class_option( $class );
-
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'int', true );
 
 	if ( $tag->has_option( 'readonly' ) )
@@ -99,13 +97,16 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 
 	$atts = wpcf7_format_atts( $atts );
 
-	$sigid = str_replace("-","_",sanitize_html_class( $tag->name ));
+	$canvas_id = ($tag->get_id_option() != '' ? $tag->get_id_option() : "wpcf7_".$tag->name."_signature");
+
+	$canvas_class = $tag->name;
+	$canvas_class = $tag->get_class_option( $canvas_class );
 
 	$html = sprintf(
 		'<div class="wpcf7-form-control-signature-global-wrap" data-field-id="%1$s">
 			<div class="wpcf7-form-control-signature-wrap" style="width:%5$spx;height:%6$spx;">
 				<div class="wpcf7-form-control-signature-body">
-					<canvas id="wpcf7_%4$s_signature" class="%4$s"></canvas>
+					<canvas id="%8$s" class="%9$s"></canvas>
 				</div>
 			</div>
 			<div class="wpcf7-form-control-clear-wrap">
@@ -116,7 +117,7 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 			<input %2$s id="wpcf7_input_%1$s"/>%3$s
 		</span>
 		',
-		sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ) );
+		sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ), $canvas_id, $canvas_class );
 
 	return $html;
 }
