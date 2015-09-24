@@ -4,7 +4,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.3
-Stable tag: 2.6.2
+Stable tag: 2.6.3
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -23,7 +23,7 @@ This plugin requires version 3.5 or higher of the "Contact Form 7" plugin.
 It should work on almost every modern web and mobile browser (IE9+, ...).
 
 = Installation / Support =
-Please read the [installation notes](http://wordpress.org/plugins/contact-form-7-signature-addon/installation/) for details.
+Please read the [installation notes](http://wordpress.org/plugins/contact-form-7-signature-addon/installation/) and [FAQ](http://wordpress.org/plugins/contact-form-7-signature-addon/faq/) for details.
 
 You can ask for support [here](http://wordpress.org/support/plugin/contact-form-7-signature-addon), and if you're new to web development and Wordpress things, i think you should have a look at [this article](http://www.wpbeginner.com/beginners-guide/how-to-properly-ask-for-wordpress-support-and-get-it/) first.
 
@@ -63,6 +63,17 @@ First things first : verify that your email is sent in HTML format. In CF7, ther
 Then verify that the image is wrapped in an HTML image tag in your mail configuration, like this :
 `<img src="[your-signature-field]"/>`
 
+= How can i customize my signature field =
+
+When building your signature field with CF7's field generator, you have several options you can add to the field shortcode.
+
+Width and height :
+`[signature signature-666 333x222]`
+Will tell the plugin to draw the field 333px wide and 222px tall.
+
+ID and class :
+`[signature signature-666 id:foo class:bar]`
+
 = How do i add styles to my signature field ? =
 
 Use CSS like you would do for any other field in your form. 
@@ -77,7 +88,7 @@ For example, using the field wrapper, you can add a border like this :
 
 It depends on your form layout but once again, you can do this by using basic CSS instructions. The plugin will deal with window size and device orientation automatically updating itself to match the right size.
 
-The only thing you have to do is override the field wrapper (not the canvas itself) size like this :
+The only thing you have to do is apply width and/or height styles *to the field wrapper, not the canvas*, like this :
 `
 @media screen and (max-width: 768px) {
     .wpcf7-form-control-signature-wrap {
@@ -95,6 +106,9 @@ window.onresize = sigFieldsResize;
 `
 
 == Changelog ==
+
+= 2.6.3 =
+* Bugfix : Shortcode options "id:" and "class:" were not taken into account
 
 = 2.6.2 =
 * Automatically get rid of rubbish JS added through 2.5 & 2.6 versions, so plugin users won't have to do it
