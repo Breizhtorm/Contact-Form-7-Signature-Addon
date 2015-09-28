@@ -5,10 +5,10 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.6.3
+Version: 2.6.4
 */
 
-define('WPCF7SIG_VERSION',"2.6.3");
+define('WPCF7SIG_VERSION',"2.6.4");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -47,8 +47,8 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 	wp_enqueue_style( 'signature-styles', plugins_url( 'signature.css' , __FILE__ ), array(), WPCF7SIG_VERSION, 'all' );
 
 	// loading signature javascript
-	wp_enqueue_script('signature-pad',plugins_url( 'signature_pad.min.js' , __FILE__ ),array(),WPCF7SIG_VERSION,false);
-	wp_enqueue_script('signature-scrips',plugins_url( 'scripts.js' , __FILE__ ),array(),WPCF7SIG_VERSION,false);
+	wp_enqueue_script('signature-pad',plugins_url( 'signature_pad.min.js' , __FILE__ ),array(),WPCF7SIG_VERSION,true);
+	wp_enqueue_script('signature-scrips',plugins_url( 'scripts.js' , __FILE__ ),array(),WPCF7SIG_VERSION,true);
 
 	$tag = new WPCF7_Shortcode( $tag );
 
