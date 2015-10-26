@@ -5,10 +5,10 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.6.4
+Version: 2.6.5
 */
 
-define('WPCF7SIG_VERSION',"2.6.4");
+define('WPCF7SIG_VERSION',"2.6.5");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -16,8 +16,8 @@ function contact_form_7_signature_fields() {
 	global $pagenow;
 	if(!function_exists('wpcf7_add_shortcode')) {
 		if($pagenow != 'plugins.php') { return; }
+
 		add_action('admin_notices', 'cfsignaturefieldserror');
-		add_action('admin_enqueue_scripts', 'contact_form_7_signature_fields_scripts');
 
 		function cfsignaturefieldserror() {
 			$out = '<div class="error" id="messages"><p>';
@@ -29,6 +29,8 @@ function contact_form_7_signature_fields() {
 			$out .= '</p></div>';
 			echo $out;
 		}
+	}else{
+		add_action('wp_enqueue_scripts', 'wpcf7_signature_assets_handler' );
 	}
 }
 
@@ -41,14 +43,16 @@ function wpcf7_add_shortcode_signature() {
 		'wpcf7_signature_shortcode_handler', true );
 }
 
+function wpcf7_signature_assets_handler() {
+	// loading signature stylesheets, if required
+	wp_enqueue_style( 'wpcf7-signature-styles', plugins_url( 'signature.css' , __FILE__ ), array(), WPCF7SIG_VERSION, 'all' );
+
+	// loading signature javascript, if required
+	wp_enqueue_script('wpcf7-signature-pad',plugins_url( 'signature_pad.min.js' , __FILE__ ),array(),WPCF7SIG_VERSION,true);
+	wp_enqueue_script('wpcf7-signature-scripts',plugins_url( 'scripts.js' , __FILE__ ),array(),WPCF7SIG_VERSION,true);
+}
+
 function wpcf7_signature_shortcode_handler( $tag ) {
-
-	// loading signature stylesheets
-	wp_enqueue_style( 'signature-styles', plugins_url( 'signature.css' , __FILE__ ), array(), WPCF7SIG_VERSION, 'all' );
-
-	// loading signature javascript
-	wp_enqueue_script('signature-pad',plugins_url( 'signature_pad.min.js' , __FILE__ ),array(),WPCF7SIG_VERSION,true);
-	wp_enqueue_script('signature-scrips',plugins_url( 'scripts.js' , __FILE__ ),array(),WPCF7SIG_VERSION,true);
 
 	$tag = new WPCF7_Shortcode( $tag );
 

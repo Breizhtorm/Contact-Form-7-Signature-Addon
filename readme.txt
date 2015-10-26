@@ -4,7 +4,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.3
-Stable tag: 2.6.4
+Stable tag: 2.6.5
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -47,7 +47,7 @@ If you want the signature image to be included in the body of your emails, just 
 
 Your contact form needs to send **HTML formatted** messages for it to work properly, so don't forget to check the corresponding box at the bottom of your email settings.
 
-**Important note** : since version 2.0, the plugin no longer uses inline base64 encoded images, and signature images are saved to your wordpress upload directory. So every email clients compatibility issues should be gone !
+**Important note** : Plugin scripts are loaded in the footer, so your theme **MUST** be using the [wp_footer()](http://codex.wordpress.org/Plugin_API/Action_Reference/wp_footer) template tag for the signature field to work properly.
 
 == Screenshots ==
 
@@ -106,6 +106,11 @@ window.onresize = sigFieldsResize;
 `
 
 == Changelog ==
+
+= 2.6.5 =
+* Changed the way plugin assets are loaded
+* Added a note about the plugin to require wp_footer() in the theme.
+* Removed unused action call
 
 = 2.6.4 =
 * Plugin scripts are now loaded in the footer in order to prevent DOM loading issues.
