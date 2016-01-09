@@ -5,10 +5,10 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.6.5
+Version: 2.6.6
 */
 
-define('WPCF7SIG_VERSION',"2.6.5");
+define('WPCF7SIG_VERSION',"2.6.6");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -24,7 +24,7 @@ function contact_form_7_signature_fields() {
 			if(file_exists(WP_PLUGIN_DIR.'/contact-form-7/wp-contact-form-7.php')) {
 				$out .= 'The Contact Form 7 plugin is installed, but <strong>you must activate Contact Form 7</strong> below for the Signature Field plugin to work.';
 			} else {
-				$out .= 'The Contact Form 7 plugin must be installed for the Tag-it Field plugin to work. <a href="'.admin_url('plugin-install.php?tab=plugin-information&plugin=contact-form-7&from=plugins&TB_iframe=true&width=600&height=550').'" class="thickbox" title="Contact Form 7">Install Now.</a>';
+				$out .= 'The Contact Form 7 plugin must be installed for the Signature Field plugin to work. <a href="'.admin_url('plugin-install.php?tab=plugin-information&plugin=contact-form-7&from=plugins&TB_iframe=true&width=600&height=550').'" class="thickbox" title="Contact Form 7">Install Now.</a>';
 			}
 			$out .= '</p></div>';
 			echo $out;

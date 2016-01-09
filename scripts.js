@@ -23,35 +23,69 @@ document.addEventListener("DOMContentLoaded", function(){
 			// Push field elements into global var
 			signatures.push({signature: signature, input: input, canvas: canvas});
 
+			sigFieldInit(i);
+
 			// Clear event listener
 			clear.addEventListener("click", function(){
 				sigFieldClear(i);
 			});
 
+			// Trigger change event on input field when signature changed
+			canvas.addEventListener("mouseup", function(){
+				sigFieldChange(i);
+			});
+
 			// Submit Event Listener
 			submit.addEventListener("click", function(){
-				if (!signature.isEmpty()){
-					input.value = signature.toDataURL();
-				}else{
-					input.value = "";
-				}
+				sigFieldBeforeSubmit(i);
 			}, false);
-			
-			// Prepare for resize
-			sigFieldResize(i);
+
+			// Resize field (for pixel ratio issues)
+			sigFieldResize(i, false);
 		});
 	});
 });
 
+// Init Canvas value if needed
+function sigFieldInit(index){
+	
+	if(signatures[index].input.value != ''){
+		signatures[index].signature.fromDataURL(signatures[index].input.value);
+	}
+}
+
+// Trigger Change event
+function sigFieldChange(index){
+
+	sigFieldBeforeSubmit(index);
+	
+	if (document.createEvent) {
+		var changeEvent = document.createEvent("HTMLEvents");
+	    changeEvent.initEvent("change", false, true);
+	    signatures[index].input.dispatchEvent(changeEvent);
+	} else {
+		signatures[index].input.fireEvent("onchange");
+	}
+}
+
+// Copy sig value to input field
+function sigFieldBeforeSubmit(index){
+	if (!signatures[index].signature.isEmpty()){
+		signatures[index].input.value = signatures[index].signature.toDataURL();
+	}else{
+		signatures[index].input.value = "";
+	}
+}
+
 // Clear a single signature field
 function sigFieldClear(index){
-
+	
 	signatures[index].signature.clear();
 	signatures[index].input.value= "";
 }
 
 // Dealing with window size and device ratio
-function sigFieldResize(index){
+function sigFieldResize(index, clear){
 
 	var canvas = signatures[index].canvas;
 
@@ -60,7 +94,9 @@ function sigFieldResize(index){
     canvas.height = canvas.offsetHeight * ratio;
     canvas.getContext("2d").scale(ratio, ratio);
 
-    sigFieldClear(index);
+    if (clear){
+    	sigFieldClear(index);
+    }
 }
 
 // Global resize management
@@ -69,7 +105,7 @@ function sigFieldsResize(){
 	var elements = document.querySelectorAll(".wpcf7-form-control-signature-input-wrap");
 	Array.prototype.forEach.call(elements, function(el, i){
 
-		sigFieldResize(i);
+		sigFieldResize(i, true);
 
 	});
 }
