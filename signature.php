@@ -5,10 +5,12 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.6.6
+Version: 2.6.8
+Text Domain: wpcf7-signature
+Domain Path: /languages
 */
 
-define('WPCF7SIG_VERSION',"2.6.6");
+define('WPCF7SIG_VERSION',"2.6.8");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -34,7 +36,10 @@ function contact_form_7_signature_fields() {
 	}
 }
 
-load_plugin_textdomain('wpcf7-signature', false, basename( dirname( __FILE__ ) ) . '/languages' );
+add_action( 'plugins_loaded', 'wpcf7_signature_load_plugin_textdomain' );
+function wpcf7_signature_load_plugin_textdomain() {
+	load_plugin_textdomain('wpcf7-signature', false, basename( dirname( __FILE__ ) ). '/languages' );
+}
 
 add_action( 'wpcf7_init', 'wpcf7_add_shortcode_signature' );
 function wpcf7_add_shortcode_signature() {
@@ -212,9 +217,9 @@ function wpcf7_add_tag_generator_signature() {
 
 	if (class_exists('WPCF7_TagGenerator')) {
 		$tag_generator = WPCF7_TagGenerator::get_instance();
-		$tag_generator->add( 'signature', __( 'signature', 'contact-form-7' ),'wpcf7_tag_generator_signature' );
+		$tag_generator->add( 'signature', __( 'signature', 'wpcf7-signature' ),'wpcf7_tag_generator_signature' );
 	} else if (function_exists('wpcf7_add_tag_generator')) {
-		wpcf7_add_tag_generator( 'signature', __( 'Signature', 'wpcf7' ), 'wpcf7-tg-pane-signature', 'wpcf7_tag_generator_signature' );
+		wpcf7_add_tag_generator( 'signature', __( 'Signature', 'wpcf7-signature' ), 'wpcf7-tg-pane-signature', 'wpcf7_tag_generator_signature' );
 	}
 	
 }
