@@ -5,12 +5,12 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.6.8
+Version: 2.7
 Text Domain: wpcf7-signature
 Domain Path: /languages
 */
 
-define('WPCF7SIG_VERSION',"2.6.8");
+define('WPCF7SIG_VERSION',"2.7");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
