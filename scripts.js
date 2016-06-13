@@ -17,11 +17,28 @@ document.addEventListener("DOMContentLoaded", function(){
 			var id = wrapper.getAttribute("data-field-id");
 			var input = document.getElementById("wpcf7_input_" + id);
 
+			// Resize field (for pixel ratio issues)
+			sigFieldRatio(canvas);
+
+			// Options
+			var options = [];
+			if (canvas.hasAttribute("data-color")){
+				options['penColor'] = canvas.getAttribute("data-color");
+			}
+			if (canvas.hasAttribute("data-background")){
+				options['backgroundColor'] = canvas.getAttribute("data-background");
+			}
+
 			// Canvas init
-			var signature = new SignaturePad(canvas);
+			var signature = new SignaturePad(canvas, options);
 
 			// Push field elements into global var
-			signatures.push({signature: signature, input: input, canvas: canvas});
+			signatures.push({
+				signature: signature, 
+				input: input, 
+				canvas: canvas, 
+				options: options
+			});
 
 			sigFieldInit(i);
 
@@ -39,9 +56,6 @@ document.addEventListener("DOMContentLoaded", function(){
 			submit.addEventListener("click", function(){
 				sigFieldBeforeSubmit(i);
 			}, false);
-
-			// Resize field (for pixel ratio issues)
-			sigFieldResize(i, false);
 		});
 	});
 });
@@ -85,14 +99,21 @@ function sigFieldClear(index){
 }
 
 // Dealing with window size and device ratio
-function sigFieldResize(index, clear){
-
-	var canvas = signatures[index].canvas;
+function sigFieldRatio(canvas){
 
 	var ratio =  Math.max(window.devicePixelRatio || 1, 1);
     canvas.width = canvas.offsetWidth * ratio;
     canvas.height = canvas.offsetHeight * ratio;
     canvas.getContext("2d").scale(ratio, ratio);
+
+}
+
+// Dealing with window size and device ratio
+function sigFieldResize(index, clear){
+
+	var canvas = signatures[index].canvas;
+
+	sigFieldRatio(canvas)
 
     if (clear){
     	sigFieldClear(index);

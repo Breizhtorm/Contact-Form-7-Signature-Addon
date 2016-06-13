@@ -4,7 +4,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.5
-Stable tag: 2.7
+Stable tag: 2.8
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -15,7 +15,8 @@ Easily add an handwritten signature field to Contact Form 7
 This plugin adds a new field type to the Contact Form 7 plugin and allows users to add an handwritten signature to the message via a signature pad. The plugin uses Szymon Nowak's great Javascript library (https://github.com/szimek/signature_pad).
 
 = News =
-* Version 2.7 is finally out, where the signature library is updated to the latest version (1.5.3). This should fix a few issues, mainly for mobile users.
+* Version 2.8 is out, with improvements made to signatures file storage and security.
+* You can now change a field's color ! See FAQ to know how.
 
 = Compatibility =
 This plugin requires version 3.5 or higher of the "Contact Form 7" plugin.
@@ -87,15 +88,21 @@ For example, using the field wrapper, you can add a border like this :
 
 It depends on your form layout but once again, you can do this by using basic CSS instructions. The plugin will deal with window size and device orientation automatically updating itself to match the right size.
 
-The only thing you have to do is apply width and/or height styles *to the field wrapper, not the canvas*, like this :
+The only thing you have to do is override width and/or height styles *to the field wrapper, not the canvas*, like this :
 `
 @media screen and (max-width: 768px) {
     .wpcf7-form-control-signature-wrap {
-        width:100%;
+        width:100% !important;
     }
 }
 ...
 `
+
+= How do i change my field's colors ? =
+
+There are options for that in the field settings (only hex color supported for the moment) :
+
+`[signature signature-666 background:#333333 color:#FFFFFF]`
 
 = The field is not working well after my desktop browser window was resized or after orientation change on my mobile. How can i fix that ? =
 
@@ -105,6 +112,12 @@ window.onresize = sigFieldsResize;
 `
 
 == Changelog ==
+
+= 2.8 =
+* Improvements on signature storage & security
+
+= 2.7.1 =
+* Now posssible to change background color and pen color
 
 = 2.7 =
 * Updated signature pad library to v1.5.3 (fixing a few mobile issues)

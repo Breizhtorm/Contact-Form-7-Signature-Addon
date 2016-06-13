@@ -5,12 +5,12 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.7
+Version: 2.8
 Text Domain: wpcf7-signature
 Domain Path: /languages
 */
 
-define('WPCF7SIG_VERSION',"2.7");
+define('WPCF7SIG_VERSION',"2.8");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -106,16 +106,24 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 
 	$atts = wpcf7_format_atts( $atts );
 
-	$canvas_id = ($tag->get_id_option() != '' ? $tag->get_id_option() : "wpcf7_".$tag->name."_signature");
+	/* Pen color */
+	$atts_canvas['data-color'] = $tag->get_option( 'color', '#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', true );
+	
+	/* Background color */
+	$atts_canvas['data-background'] = $tag->get_option( 'background', '#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', true );
+
+	$atts_canvas['id'] = ($tag->get_id_option() != '' ? $tag->get_id_option() : "wpcf7_".$tag->name."_signature");
 
 	$canvas_class = $tag->name;
-	$canvas_class = $tag->get_class_option( $canvas_class );
+	$atts_canvas['class'] = $tag->get_class_option( $canvas_class );
+
+	$atts_canvas = wpcf7_format_atts( $atts_canvas );
 
 	$html = sprintf(
 		'<div class="wpcf7-form-control-signature-global-wrap" data-field-id="%1$s">
 			<div class="wpcf7-form-control-signature-wrap" style="width:%5$spx;height:%6$spx;">
 				<div class="wpcf7-form-control-signature-body">
-					<canvas id="%8$s" class="%9$s"></canvas>
+					<canvas %8$s></canvas>
 				</div>
 			</div>
 			<div class="wpcf7-form-control-clear-wrap">
@@ -126,7 +134,7 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 			<input %2$s id="wpcf7_input_%1$s"/>%3$s
 		</span>
 		',
-		sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ), $canvas_id, $canvas_class );
+		sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ), $atts_canvas );
 
 	return $html;
 }
@@ -272,6 +280,16 @@ function wpcf7_tag_generator_signature( $contact_form, $args = '' ) {
 			<td><input type="number" name="rows" class="heightvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-height' ); ?>" /></td>
 			</tr>
 
+			<tr>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-color' ); ?>"><?php echo esc_html( __( 'Color attribute', 'contact-form-7' ) ); ?></label></th>
+			<td><input type="text" name="color" class="heightvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-color' ); ?>" /></td>
+			</tr>
+
+			<tr>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-background' ); ?>"><?php echo esc_html( __( 'Background attribute', 'contact-form-7' ) ); ?></label></th>
+			<td><input type="text" name="background" class="heightvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-background' ); ?>" /></td>
+			</tr>
+
 		</tbody>
 		</table>
 		</fieldset>
@@ -336,34 +354,47 @@ function wpcf7_tag_generator_signature( $contact_form, $args = '' ) {
 */
 function wpcf7_manage_signature ($posted_data) {
 
-	$dir = "/signatures";
-
 	foreach ($posted_data as $key => $data) {
 		if (is_string($data) && strrpos($data, "data:image/png;base64", -strlen($data)) !== FALSE){
 	        $data_pieces = explode(",", $data);
 	        $encoded_image = $data_pieces[1];
 	        $decoded_image = base64_decode($encoded_image);
 
-	        $upload_dir = wp_upload_dir();
-	        $signature_dir = $upload_dir['basedir'].$dir;
-	        $signature_dir_url = $upload_dir['baseurl'].$dir;
+	        $signature_dir = trailingslashit(wpcf7_signature_dir());
 
-	        if( ! file_exists( $signature_dir ) ){
-	    		wp_mkdir_p( $signature_dir );
+	        // Creating directory and htaccess file
+	        if( !file_exists( $signature_dir ) ){
+	    		if (wp_mkdir_p( $signature_dir )){
+	    			$htaccess_file = $signature_dir . '.htaccess';
+
+					if ( !file_exists( $htaccess_file ) && $handle = @fopen( $htaccess_file, 'w' ) ) {
+						fwrite( $handle, 'Order deny,allow' . "\n" );
+						fwrite( $handle, 'Deny from all' . "\n" );
+						fwrite( $handle, '<Files ~ "^[0-9A-Za-z_-]+\\.(png)$">' . "\n" );
+						fwrite( $handle, '    Allow from all' . "\n" );
+						fwrite( $handle, '</Files>' . "\n" );
+						fclose( $handle );
+					}
+	    		}
 	        }
 
-	        $filename = $key."-".time().".png";
-	        $filepath = $signature_dir."/".$filename;
+	        $filename = sanitize_file_name($key."-".time().".png");
+	        $filepath = wp_normalize_path( $signature_dir . $filename );
 
-	        file_put_contents( $filepath,$decoded_image);
+	       	// Writing signature
+	        if ( $handle = @fopen( $filepath, 'w' ) ) {
+				fwrite( $handle, $decoded_image );
+				fclose( $handle );
+	        	@chmod( $filepath, 0644 );
+			}
 
 	        if (file_exists($filepath)){
-	        	// File created : changing posted data to the URL instead of base64 encoded image data
-	        	$fileurl = $signature_dir_url."/".$filename;
-	        	
+
+	        	$fileurl = wpcf7_signature_url($filename);
         		$posted_data[$key] = $fileurl;
+
 	        }else{
-	        	error_log("Cannot create signature file in directory ".$filepath);
+	        	error_log("Cannot create signature file : ".$filepath);
 	        }
 		}
 	}
@@ -371,5 +402,27 @@ function wpcf7_manage_signature ($posted_data) {
 	return $posted_data;
 }
 add_filter( 'wpcf7_posted_data', 'wpcf7_manage_signature' );
+
+function wpcf7_signature_dir() {
+	if ( defined( 'WPCF7_SIGNATURE_DIR' ) )
+		return WPCF7_SIGNATURE_DIR;
+	else
+		return wpcf7_upload_dir( 'dir' ) . '/wpcf7_signatures';
+}
+function wpcf7_signature_dir_url() {
+	if ( defined( 'WPCF7_SIGNATURE_URL' ) )
+		return WPCF7_SIGNATURE_URL;
+	else
+		return wpcf7_upload_dir( 'url' ) . '/wpcf7_signatures';
+}
+function wpcf7_signature_url( $filename ) {
+	$url = trailingslashit( wpcf7_signature_dir_url() ) . $filename;
+
+	if ( is_ssl() && 'http:' == substr( $url, 0, 5 ) ) {
+		$url = 'https:' . substr( $url, 5 );
+	}
+
+	return apply_filters( 'wpcf7_signature_url', esc_url_raw( $url ) );
+}
 
 ?>
