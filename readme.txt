@@ -4,7 +4,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.5
-Stable tag: 2.8
+Stable tag: 2.8.1
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -112,6 +112,10 @@ window.onresize = sigFieldsResize;
 `
 
 == Changelog ==
+
+= 2.8.1 =
+* Fixed a bug where CF7 additionnal settings were erased sometimes
+* Fixed : signature field is cleared after contact form is successfully sent
 
 = 2.8 =
 * Improvements on signature storage & security

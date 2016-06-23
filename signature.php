@@ -5,12 +5,12 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.8
+Version: 2.8.1
 Text Domain: wpcf7-signature
 Domain Path: /languages
 */
 
-define('WPCF7SIG_VERSION',"2.8");
+define('WPCF7SIG_VERSION',"2.8.1");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -174,7 +174,6 @@ function wpcf7_signature_validation_filter( $result, $tag ) {
 }
 
 /* Adding a Javascript callback to form validation, so we can clear the signature fields */
-
 function filter_wpcf7_contact_form_properties( $properties, $instance ) 
 {
    	if (! is_array($properties)){
@@ -192,21 +191,22 @@ function filter_wpcf7_contact_form_properties( $properties, $instance )
 		if ( !empty( $scanned[$i]) && $scanned[$i]['basetype'] == "signature"){
 			// We got one !
 			//Let's add the callback if needed
-		   	$JSCallback = "sigFieldsClear();";
+		   	$JSCallback = 'sigFieldsClear();';
+		   	$WPCF7Callback = 'on_sent_ok: "'.$JSCallback.'"';
 		   	$settings = $properties['additional_settings'];
 
-	    	// Because of buggy 2.5/2.6, we have to first get rid of every callback call
-	    	$settings = str_replace($JSCallback,"",$settings);
+		   	// first we need to get rid of the old callback if present
+		   	if (strpos($settings, $JSCallback) === 0){
+		   		$settings = substr($settings, strlen($JSCallback));
+		   	}
 
-		    if(!strpos($settings, $JSCallback) !== false){
-		   	
-		    	$pos = strrpos($settings, ";");
-		    	if($pos !== false)
-			    {
-			        $settings = substr_replace($settings, $JSCallback, $pos + 1, 0);
-			    }else{
-			    	$settings = "on_sent_ok:\"".$JSCallback."\"";
-			    }
+		   	// and add the new one
+		    if(!strstr($settings, addslashes($WPCF7Callback)) && !strstr($settings, $WPCF7Callback)){
+
+		    	if (strlen($settings) > 0)
+		    		$settings .= "\n";
+
+		    	$settings .= $WPCF7Callback."\n";
 		    }
 
 		   	$properties['additional_settings'] = $settings;
