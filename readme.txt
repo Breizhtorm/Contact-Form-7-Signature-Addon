@@ -5,7 +5,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.6
-Stable tag: 3.0
+Stable tag: 3.1
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -16,7 +16,7 @@ Easily add an handwritten signature field to Contact Form 7
 This plugin adds a new field type to the Contact Form 7 plugin and allows users to add an handwritten signature to the message via a signature pad. The plugin uses Szymon Nowak's great Javascript library (https://github.com/szimek/signature_pad).
 
 = News =
-* Version 3.0 is out, allowing signatures to be send as attachments (security first!). See installation section for more details.
+* Version 3 is out, allowing signatures to be send as attachments (security first!). See installation section for more details.
 * You can now change a field's color ! See FAQ to know how.
 
 = Compatibility =
@@ -118,6 +118,9 @@ window.onresize = sigFieldsResize;
 `
 
 == Changelog ==
+
+= 3.1 =
+* Fixed a bug where mandatory signatures cannot be sent as attachments
 
 = 3.0 =
 * Added support for signatures as attachments

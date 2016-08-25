@@ -5,12 +5,12 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 3.0
+Version: 3.1
 Text Domain: wpcf7-signature
 Domain Path: /languages
 */
 
-define('WPCF7SIG_VERSION',"3.0");
+define('WPCF7SIG_VERSION',"3.1");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -412,7 +412,7 @@ function wpcf7_signature_mail_components($components){
 						// Is is matching a signature tag ?
 						$tags = $contact_form->form_scan_shortcode();
 						foreach ($tags as $tag) {
-							if ("signature" == $tag['type'] && $tag['name'] == $attachment_name){
+							if (("signature" == $tag['type'] || "signature*" == $tag['type'])  && $tag['name'] == $attachment_name){
 								
 								// File exists ?
 								if (@file_exists($data)){
