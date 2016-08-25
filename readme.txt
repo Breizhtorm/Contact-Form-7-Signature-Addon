@@ -1,10 +1,11 @@
 === Contact Form 7 Signature Addon ===
-Plugin URI: http://www.breizhtorm.fr/blog/
+Plugin URI: http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html
+Donate link: http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html
 Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
-Tested up to: 4.5
-Stable tag: 2.8.1
+Tested up to: 4.6
+Stable tag: 3.0
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -15,7 +16,7 @@ Easily add an handwritten signature field to Contact Form 7
 This plugin adds a new field type to the Contact Form 7 plugin and allows users to add an handwritten signature to the message via a signature pad. The plugin uses Szymon Nowak's great Javascript library (https://github.com/szimek/signature_pad).
 
 = News =
-* Version 2.8 is out, with improvements made to signatures file storage and security.
+* Version 3.0 is out, allowing signatures to be send as attachments (security first!). See installation section for more details.
 * You can now change a field's color ! See FAQ to know how.
 
 = Compatibility =
@@ -23,14 +24,14 @@ This plugin requires version 3.5 or higher of the "Contact Form 7" plugin.
 It should work on almost every modern web and mobile browser (IE9+, ...).
 
 = Installation / Support =
-Please read the [installation notes](http://wordpress.org/plugins/contact-form-7-signature-addon/installation/) and [FAQ](http://wordpress.org/plugins/contact-form-7-signature-addon/faq/) for details.
+Please read the [installation notes](http://wordpress.org/plugins/contact-form-7-signature-addon/installation/) and [FAQ](http://wordpress.org/plugins/contact-form-7-signature-addon/faq/) for details on how to setup your signature field.
 
 You can ask for support [here](http://wordpress.org/support/plugin/contact-form-7-signature-addon), and if you're new to web development and Wordpress things, i think you should have a look at [this article](http://www.wpbeginner.com/beginners-guide/how-to-properly-ask-for-wordpress-support-and-get-it/) first.
 
 = Be kind =
 This plugin is just sharing the result of something i needed once for a project, there's nothing commercial in there. But i'll listen to your requests and do my best to keep the plugin up to date anyway.
 
-Don't forget to rate the plugin if you like it (or not).
+Don't forget to rate the plugin if you like it (or not). You can even make a small donation [here](http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html).
 
 == Installation ==
 
@@ -44,6 +45,11 @@ This plugin requires the Contact Form 7 plugin.
 
 If you want the signature image to be included in the body of your emails, just put an image tag which src attribute is set to be the content of your field, just like this :
 `<img src="[your-signature-field]"/>`
+
+If you want the signature image to be sent as an attachment to the email, just follow these easy steps : 
+
+1. add a "attachment" parameter to your field like this : `[signature your-signature-field attachment]`
+2. add the signature tag to the mail attachment section, like you would do for a file (see [this tutorial](http://contactform7.com/file-uploading-and-attachment/)) : `[your-file][your-signature-field]`
 
 Your contact form needs to send **HTML formatted** messages for it to work properly, so don't forget to check the corresponding box at the bottom of your email settings.
 
@@ -112,6 +118,9 @@ window.onresize = sigFieldsResize;
 `
 
 == Changelog ==
+
+= 3.0 =
+* Added support for signatures as attachments
 
 = 2.8.1 =
 * Fixed a bug where CF7 additionnal settings were erased sometimes

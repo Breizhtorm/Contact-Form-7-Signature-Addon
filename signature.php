@@ -5,12 +5,12 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 2.8.1
+Version: 3.0
 Text Domain: wpcf7-signature
 Domain Path: /languages
 */
 
-define('WPCF7SIG_VERSION',"2.8.1");
+define('WPCF7SIG_VERSION',"3.0");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -57,6 +57,17 @@ function wpcf7_signature_assets_handler() {
 	wp_enqueue_script('wpcf7-signature-scripts',plugins_url( 'scripts.js' , __FILE__ ),array(),WPCF7SIG_VERSION,true);
 }
 
+/* TODO
+add_action( 'admin_enqueue_scripts', 'wpcf7_signature_admin_enqueue_scripts' );
+function wpcf7_signature_admin_enqueue_scripts( ) {
+
+	// Loading admin js
+	wp_enqueue_script( 'wpcf7-signature-admin-taggenerator',
+		plugins_url( 'tag-generator.js' , __FILE__ ),
+		array( 'jquery', 'wpcf7-admin', 'wpcf7-admin-taggenerator' ), WPCF7SIG_VERSION, true );
+}
+*/
+
 function wpcf7_signature_shortcode_handler( $tag ) {
 
 	$tag = new WPCF7_Shortcode( $tag );
@@ -98,18 +109,19 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 	if ( wpcf7_is_posted() && isset( $_POST[$tag->name] ) )
 		$value = wp_unslash( $_POST[$tag->name] );
 
+	/* Input attributes */
+
 	$atts['value'] = $value;
-
 	$atts['type'] = 'hidden';
-
 	$atts['name'] = $tag->name;
-
 	$atts = wpcf7_format_atts( $atts );
 
-	/* Pen color */
+	/* Canvas attributes */
+
+	// Pen color
 	$atts_canvas['data-color'] = $tag->get_option( 'color', '#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', true );
 	
-	/* Background color */
+	// Background color
 	$atts_canvas['data-background'] = $tag->get_option( 'background', '#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', true );
 
 	$atts_canvas['id'] = ($tag->get_id_option() != '' ? $tag->get_id_option() : "wpcf7_".$tag->name."_signature");
@@ -118,6 +130,13 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 	$atts_canvas['class'] = $tag->get_class_option( $canvas_class );
 
 	$atts_canvas = wpcf7_format_atts( $atts_canvas );
+
+	/* Attachment attributes */
+
+	$atts_attach['value'] = $tag->has_option( 'attachment' );
+	$atts_attach['type'] = 'hidden';
+	$atts_attach['name'] = $tag->name . "-attachment";
+	$atts_attach = wpcf7_format_atts( $atts_attach );
 
 	$html = sprintf(
 		'<div class="wpcf7-form-control-signature-global-wrap" data-field-id="%1$s">
@@ -131,10 +150,10 @@ function wpcf7_signature_shortcode_handler( $tag ) {
 			</div>
 		</div>
 		<span class="wpcf7-form-control-wrap wpcf7-form-control-signature-input-wrap %1$s">
-			<input %2$s id="wpcf7_input_%1$s"/>%3$s
+			<input %2$s id="wpcf7_input_%1$s"/><input %9$s id="wpcf7_input_%1$s_attachment"/>%3$s
 		</span>
 		',
-		sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ), $atts_canvas );
+		sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ), $atts_canvas, $atts_attach );
 
 	return $html;
 }
@@ -173,7 +192,10 @@ function wpcf7_signature_validation_filter( $result, $tag ) {
 	return $result;
 }
 
-/* Adding a Javascript callback to form validation, so we can clear the signature fields */
+/*
+* Modifying form properties 
+* Adding a Javascript callback to form validation, so we can clear the signature fields 
+*/
 function filter_wpcf7_contact_form_properties( $properties, $instance ) 
 {
    	if (! is_array($properties)){
@@ -281,14 +303,26 @@ function wpcf7_tag_generator_signature( $contact_form, $args = '' ) {
 			</tr>
 
 			<tr>
-			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-color' ); ?>"><?php echo esc_html( __( 'Color attribute', 'contact-form-7' ) ); ?></label></th>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-color' ); ?>"><?php echo esc_html( __( 'Color attribute', 'wpcf7-signature' ) ); ?></label></th>
 			<td><input type="text" name="color" class="heightvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-color' ); ?>" /></td>
 			</tr>
 
 			<tr>
-			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-background' ); ?>"><?php echo esc_html( __( 'Background attribute', 'contact-form-7' ) ); ?></label></th>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-background' ); ?>"><?php echo esc_html( __( 'Background attribute', 'wpcf7-signature' ) ); ?></label></th>
 			<td><input type="text" name="background" class="heightvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-background' ); ?>" /></td>
 			</tr>
+
+			<?php /* TODO
+			<tr>
+			<th scope="row"><?php echo esc_html( __( 'Send as attachment ?', 'wpcf7-signature' ) ); ?></th>
+			<td>
+				<fieldset>
+				<legend class="screen-reader-text"><?php echo esc_html( __( 'Send as attachment ?', 'wpcf7-signature' ) ); ?></legend>
+				<label><input type="checkbox" name="attachment" /></label>
+				</fieldset>
+			</td>
+			</tr>
+			*/ ?>
 
 		</tbody>
 		</table>
@@ -349,6 +383,57 @@ function wpcf7_tag_generator_signature( $contact_form, $args = '' ) {
 }
 
 /**
+* Modifying mail components
+* Adding signatures as attachments if needed
+*/
+function wpcf7_signature_mail_components($components){
+
+	// Which email template is it ?
+	if ( $mail = WPCF7_Mail::get_current() ) {
+
+		if ( $submission = WPCF7_Submission::get_instance() ) {
+
+			if ( $contact_form = WPCF7_ContactForm::get_current() ) {
+
+				// Dealing with main Email
+				$mail = $contact_form->prop($mail->name());
+				$new_attachments = $mail['attachments'];
+
+				// Getting attachments one by one in mail configuration
+				$attachments = preg_split("/\\r\\n|\\r|\\n/", $mail['attachments']);
+
+				foreach ($attachments as $attachment) {
+
+					preg_match_all("/\[(.*?)\]/", $attachment, $attachment_names);
+
+					foreach ($attachment_names[1] as $attachment_name) {
+						$data = $submission->get_posted_data($attachment_name);
+
+						// Is is matching a signature tag ?
+						$tags = $contact_form->form_scan_shortcode();
+						foreach ($tags as $tag) {
+							if ("signature" == $tag['type'] && $tag['name'] == $attachment_name){
+								
+								// File exists ?
+								if (@file_exists($data)){
+
+									// Adding file as attachment
+									$components['attachments'][] = $data;
+								}
+							}
+						}
+					}
+					
+				}
+			}
+		}
+	}
+
+	return $components;
+}
+add_filter( 'wpcf7_mail_components', 'wpcf7_signature_mail_components' );
+
+/**
 * When form data is posted, we save the image somewhere in WP public directory
 * and change the posted value to the image URL
 */
@@ -359,45 +444,81 @@ function wpcf7_manage_signature ($posted_data) {
 	        $data_pieces = explode(",", $data);
 	        $encoded_image = $data_pieces[1];
 	        $decoded_image = base64_decode($encoded_image);
+	        $filename = sanitize_file_name(wpcf7_canonicalize($key."-".time().".png"));
+
+	        // Do we need to treat it as attachement ?
+	        $is_attachment = $posted_data[$key."-attachment"] == 1;
 
 	        $signature_dir = trailingslashit(wpcf7_signature_dir());
 
-	        // Creating directory and htaccess file
-	        if( !file_exists( $signature_dir ) ){
-	    		if (wp_mkdir_p( $signature_dir )){
-	    			$htaccess_file = $signature_dir . '.htaccess';
+	        if (!$is_attachment){
 
-					if ( !file_exists( $htaccess_file ) && $handle = @fopen( $htaccess_file, 'w' ) ) {
-						fwrite( $handle, 'Order deny,allow' . "\n" );
-						fwrite( $handle, 'Deny from all' . "\n" );
-						fwrite( $handle, '<Files ~ "^[0-9A-Za-z_-]+\\.(png)$">' . "\n" );
-						fwrite( $handle, '    Allow from all' . "\n" );
-						fwrite( $handle, '</Files>' . "\n" );
-						fclose( $handle );
-					}
-	    		}
-	        }
+	        	// Sending signature image inline (default)
 
-	        $filename = sanitize_file_name($key."-".time().".png");
-	        $filepath = wp_normalize_path( $signature_dir . $filename );
+		        if( !file_exists( $signature_dir ) ){ // Creating directory and htaccess file
+		    		if (wp_mkdir_p( $signature_dir )){
+		    			$htaccess_file = $signature_dir . '.htaccess';
 
-	       	// Writing signature
-	        if ( $handle = @fopen( $filepath, 'w' ) ) {
-				fwrite( $handle, $decoded_image );
-				fclose( $handle );
-	        	@chmod( $filepath, 0644 );
-			}
+						if ( !file_exists( $htaccess_file ) && $handle = @fopen( $htaccess_file, 'w' ) ) {
+							fwrite( $handle, 'Order deny,allow' . "\n" );
+							fwrite( $handle, 'Deny from all' . "\n" );
+							fwrite( $handle, '<Files ~ "^[0-9A-Za-z_-]+\\.(png)$">' . "\n" );
+							fwrite( $handle, '    Allow from all' . "\n" );
+							fwrite( $handle, '</Files>' . "\n" );
+							fclose( $handle );
+						}
+		    		}
+		        }
 
-	        if (file_exists($filepath)){
+		        $filepath = wp_normalize_path( $signature_dir . $filename );
 
-	        	$fileurl = wpcf7_signature_url($filename);
-        		$posted_data[$key] = $fileurl;
+		       	// Writing signature
+		        if ( $handle = @fopen( $filepath, 'w' ) ) {
+					fwrite( $handle, $decoded_image );
+					fclose( $handle );
+		        	@chmod( $filepath, 0644 );
+				}
+
+		        if (file_exists($filepath)){
+
+		        	$fileurl = wpcf7_signature_url($filename);
+	        		$posted_data[$key] = $fileurl;
+
+		        }else{
+		        	error_log("Cannot create signature file : ".$filepath);
+		        }
 
 	        }else{
-	        	error_log("Cannot create signature file : ".$filepath);
+
+	        	// Preparing to send signature as attachement
+
+	        	wpcf7_init_uploads(); // Confirm upload dir
+				$uploads_dir = wpcf7_upload_tmp_dir();
+				$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
+				$filename = wp_unique_filename( $uploads_dir, $filename );
+
+				$filepath = trailingslashit( $uploads_dir ) . $filename;
+
+		       	// Writing signature
+		        if ( $handle = @fopen( $filepath, 'w' ) ) {
+					fwrite( $handle, $decoded_image );
+					fclose( $handle );
+		        	@chmod( $filepath, 0400 ); // Make sure the uploaded file is only readable for the owner process
+				}
+
+				if (file_exists($filepath)){
+
+	        		$posted_data[$key] = $filepath;
+
+		        }else{
+		        	error_log("Cannot create signature file as attachment : ".$filepath);
+		        }
 	        }
+	        
 		}
 	}
+
+	//error_log(print_r($posted_data, true));
 
 	return $posted_data;
 }
