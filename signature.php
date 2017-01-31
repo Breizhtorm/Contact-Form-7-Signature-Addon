@@ -16,7 +16,6 @@ define('WPCF7SIG_VERSION',"3.1");
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
 function contact_form_7_signature_fields() {
 	global $pagenow;
-	if(!function_exists('wpcf7_add_shortcode')) {
 		if($pagenow != 'plugins.php') { return; }
 
 		add_action('admin_notices', 'cfsignaturefieldserror');
@@ -43,7 +42,6 @@ function wpcf7_signature_load_plugin_textdomain() {
 
 add_action( 'wpcf7_init', 'wpcf7_add_shortcode_signature' );
 function wpcf7_add_shortcode_signature() {
-	wpcf7_add_shortcode(
 		array( 'signature', 'signature*' ),
 		'wpcf7_signature_shortcode_handler', true );
 }
@@ -70,7 +68,6 @@ function wpcf7_signature_admin_enqueue_scripts( ) {
 
 function wpcf7_signature_shortcode_handler( $tag ) {
 
-	$tag = new WPCF7_Shortcode( $tag );
 
 	if ( empty( $tag->name ) )
 		return '';
@@ -165,7 +162,6 @@ add_filter( 'wpcf7_validate_signature', 'wpcf7_signature_validation_filter', 10,
 add_filter( 'wpcf7_validate_signature*', 'wpcf7_signature_validation_filter', 10, 2 );
 
 function wpcf7_signature_validation_filter( $result, $tag ) {
-	$tag = new WPCF7_Shortcode( $tag );
 
 	$name = $tag->name;
 
@@ -203,8 +199,6 @@ function filter_wpcf7_contact_form_properties( $properties, $instance )
    	}
 
    	// We need to know if the current form has a signature field
-   	$manager = WPCF7_ShortcodeManager::get_instance();
-   	$scanned = $manager->scan_shortcode( $properties['form'] );
 
    	if ( empty( $scanned ) )
 			return $properties;
@@ -410,7 +404,7 @@ function wpcf7_signature_mail_components($components){
 						$data = $submission->get_posted_data($attachment_name);
 
 						// Is is matching a signature tag ?
-						$tags = $contact_form->form_scan_shortcode();
+						$tags = $contact_form->scan_form_tags();
 						foreach ($tags as $tag) {
 							if (("signature" == $tag['type'] || "signature*" == $tag['type'])  && $tag['name'] == $attachment_name){
 								
