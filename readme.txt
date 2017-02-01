@@ -4,8 +4,8 @@ Donate link: http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.h
 Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
-Tested up to: 4.6
-Stable tag: 3.1
+Tested up to: 4.7
+Stable tag: 3.2
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -20,8 +20,9 @@ This plugin adds a new field type to the Contact Form 7 plugin and allows users 
 * You can now change a field's color ! See FAQ to know how.
 
 = Compatibility =
-This plugin requires version 3.5 or higher of the "Contact Form 7" plugin.
-It should work on almost every modern web and mobile browser (IE9+, ...).
+This plugin requires version 4.6 or higher of the "Contact Form 7" plugin.
+When using version 3.2+ of this plugin, please be sure to also use at least CF7 version 4.6+.
+The signature pad should work on almost every modern web and mobile browser (IE9+, ...).
 
 = Installation / Support =
 Please read the [installation notes](http://wordpress.org/plugins/contact-form-7-signature-addon/installation/) and [FAQ](http://wordpress.org/plugins/contact-form-7-signature-addon/faq/) for details on how to setup your signature field.
@@ -118,6 +119,9 @@ window.onresize = sigFieldsResize;
 `
 
 == Changelog ==
+
+= 3.2 =
+* Removed use of CF7 deprecated classes & methods. Thanks to [leac](https://github.com/leac)
 
 = 3.1 =
 * Fixed a bug where mandatory signatures cannot be sent as attachments
