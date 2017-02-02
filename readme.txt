@@ -20,8 +20,7 @@ This plugin adds a new field type to the Contact Form 7 plugin and allows users 
 * You can now change a field's color ! See FAQ to know how.
 
 = Compatibility =
-This plugin requires version 4.6 or higher of the "Contact Form 7" plugin.
-When using version 3.2+ of this plugin, please be sure to also use at least CF7 version 4.6+.
+In its latest version (3.2+), this plugin requires version 4.6 or higher of the "Contact Form 7" plugin.
 The signature pad should work on almost every modern web and mobile browser (IE9+, ...).
 
 = Installation / Support =
@@ -54,7 +53,7 @@ If you want the signature image to be sent as an attachment to the email, just f
 
 Your contact form needs to send **HTML formatted** messages for it to work properly, so don't forget to check the corresponding box at the bottom of your email settings.
 
-**Important note** : Plugin scripts are loaded in the footer, so your theme **MUST** be using the [wp_footer()](http://codex.wordpress.org/Plugin_API/Action_Reference/wp_footer) template tag for the signature field to work properly.
+**Important** : Plugin scripts are loaded in the footer, so your theme **MUST** be using the [wp_footer()](http://codex.wordpress.org/Plugin_API/Action_Reference/wp_footer) template tag for the signature field to work properly.
 
 == Screenshots ==
 
@@ -121,7 +120,7 @@ window.onresize = sigFieldsResize;
 == Changelog ==
 
 = 3.2 =
-* Removed use of CF7 deprecated classes & methods. Thanks to [leac](https://github.com/leac)
+* Removed use of CF7 deprecated classes & methods, thanks to [leac](https://github.com/leac)
 
 = 3.1 =
 * Fixed a bug where mandatory signatures cannot be sent as attachments
