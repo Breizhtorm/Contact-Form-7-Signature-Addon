@@ -53,9 +53,11 @@ document.addEventListener("DOMContentLoaded", function(){
 			});
 
 			// Submit Event Listener
-			submit.addEventListener("click", function(){
-				sigFieldBeforeSubmit(i);
-			}, false);
+			if (submit != null && typeof(submit) != 'undefined'){
+				submit.addEventListener("click", function(){
+					sigFieldBeforeSubmit(i);
+				}, false);
+			}
 		});
 	});
 });
