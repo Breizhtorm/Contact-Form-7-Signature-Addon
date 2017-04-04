@@ -5,7 +5,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.7
-Stable tag: 3.2.1
+Stable tag: 4.0
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -16,11 +16,10 @@ Easily add an handwritten signature field to Contact Form 7
 This plugin adds a new field type to the Contact Form 7 plugin and allows users to add an handwritten signature to the message via a signature pad. The plugin uses Szymon Nowak's great Javascript library (https://github.com/szimek/signature_pad).
 
 = News =
-* Version 3 is out, allowing signatures to be send as attachments (security first!). See installation section for more details.
-* You can now change a field's color ! See FAQ to know how.
+* Version 4 is out, with a major technical refactoring of the plugin, making it easier for me to maintain it and to bring new features. Developers, please see FAQ to know what changed.
 
 = Compatibility =
-In its latest version (3.2+), this plugin requires version 4.6 or higher of the "Contact Form 7" plugin.
+In its latest versions (3.2+), this plugin requires version 4.6 or higher of the "Contact Form 7" plugin.
 The signature pad should work on almost every modern web and mobile browser (IE9+, ...).
 
 = Installation / Support =
@@ -112,12 +111,28 @@ There are options for that in the field settings (only hex color supported for t
 
 = The field is not working well after my desktop browser window was resized or after orientation change on my mobile. How can i fix that ? =
 
-The signature field needs to be "reloaded" too when its container's size changes, but you should be aware that it will also clear its content. I assume this is your responsability to do so. The plugin provides a javascript function that you can call from your theme's Javascript in order to do that :
+The signature field needs to be "reloaded" too when its container's size changes, but you should be aware that it will also clear its content. I assume this is your responsability to do so. The plugin provides a jQuery function that you can call from your theme's script file :
 `
-window.onresize = sigFieldsResize;
+window.onresize = function(){
+    $('div.wpcf7 > form').wpcf7ResizeSignatures();
+};
 `
 
+= As a theme developer, what changed for me with version 4 ? =
+
+The main thing that changed is the way you can interact with the plugin. There's now a jQuery plugin for that, and i got rid of the old JS functions.
+
+Available methods are : 
+
+`$('div.wpcf7 > form').wpcf7ResizeSignatures();` to resize fields
+`$('div.wpcf7 > form').wpcf7ClearSignatures();` to clear fields
+`$('div.wpcf7 > form').wpcf7InitSignatures();` to reload fields
+
 == Changelog ==
+
+= 4.0 =
+* Technical refactoring
+    - now using jQuery : if you were using the old sigFieldsResize function for example, please update to its jQuery counterpart, see [FAQ](http://wordpress.org/plugins/contact-form-7-signature-addon/faq/)).
 
 = 3.2.1 =
 * Fixed a bug when there's no submit button in form

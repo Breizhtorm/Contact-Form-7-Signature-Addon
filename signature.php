@@ -5,12 +5,12 @@ Plugin URI:
 Description: Add signature field type to the popular Contact Form 7 plugin.
 Author: Breizhtorm
 Author URI: http://www.breizhtorm.fr
-Version: 3.2.1
+Version: 4.0
 Text Domain: wpcf7-signature
 Domain Path: /languages
 */
 
-define('WPCF7SIG_VERSION',"3.2.1");
+define('WPCF7SIG_VERSION',"4.0");
 
 // this plugin needs to be initialized AFTER the Contact Form 7 plugin.
 add_action('plugins_loaded', 'contact_form_7_signature_fields', 10); 
@@ -213,7 +213,7 @@ function filter_wpcf7_contact_form_properties( $properties, $instance )
 		if ( !empty( $scanned[$i]) && $scanned[$i]['basetype'] == "signature"){
 			// We got one !
 			//Let's add the callback if needed
-		   	$JSCallback = 'sigFieldsClear();';
+		   	$JSCallback = "$('div.wpcf7 > form').wpcf7ClearSignatures();";
 		   	$WPCF7Callback = 'on_sent_ok: "'.$JSCallback.'"';
 		   	$settings = $properties['additional_settings'];
 

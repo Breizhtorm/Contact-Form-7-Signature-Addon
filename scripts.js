@@ -60,7 +60,7 @@
 
 
 	// Resize canvas fields
-	$.fn.sigFieldsResize = function(){
+	$.fn.wpcf7ResizeSignatures = function(){
 
 		$(".wpcf7-form-control-signature-input-wrap").each(function(i){
 			sigFieldResize(i, true);
@@ -70,7 +70,7 @@
 	}
 
 	// Globally clear fields (on form submit for exemple)
-	$.fn.sigFieldsClear = function(){
+	$.fn.wpcf7ClearSignatures = function(){
 		
 		$(".wpcf7-form-control-signature-input-wrap").each(function(i){
 			sigFieldClear(i);
