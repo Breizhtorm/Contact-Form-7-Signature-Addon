@@ -23,7 +23,7 @@ In its latest versions (3.2+), this plugin requires version 4.6 or higher of the
 The signature pad should work on almost every modern web and mobile browser (IE9+, ...).
 
 = Installation / Support =
-Please read the [installation notes](http://wordpress.org/plugins/contact-form-7-signature-addon/installation/) and [FAQ](http://wordpress.org/plugins/contact-form-7-signature-addon/faq/) for details on how to setup your signature field.
+Please read the [FAQ](http://wordpress.org/plugins/contact-form-7-signature-addon/#faq) for details on how to setup your signature fields.
 
 You can ask for support [here](http://wordpress.org/support/plugin/contact-form-7-signature-addon), and if you're new to web development and Wordpress things, i think you should have a look at [this article](http://www.wpbeginner.com/beginners-guide/how-to-properly-ask-for-wordpress-support-and-get-it/) first.
 
@@ -45,14 +45,10 @@ This plugin requires the Contact Form 7 plugin.
 If you want the signature image to be included in the body of your emails, just put an image tag which src attribute is set to be the content of your field, just like this :
 `<img src="[your-signature-field]"/>`
 
-If you want the signature image to be sent as an attachment to the email, just follow these easy steps : 
+If you want the signature image to be sent as an attachment to the email, just follow these steps : 
 
 1. add a "attachment" parameter to your field like this : `[signature your-signature-field attachment]`
 2. add the signature tag to the mail attachment section, like you would do for a file (see [this tutorial](http://contactform7.com/file-uploading-and-attachment/)) : `[your-file][your-signature-field]`
-
-Your contact form needs to send **HTML formatted** messages for it to work properly, so don't forget to check the corresponding box at the bottom of your email settings.
-
-**Important** : Plugin scripts are loaded in the footer, so your theme **MUST** be using the [wp_footer()](http://codex.wordpress.org/Plugin_API/Action_Reference/wp_footer) template tag for the signature field to work properly.
 
 == Screenshots ==
 
@@ -68,7 +64,14 @@ First things first : verify that your email is sent in HTML format. In CF7, ther
 Then verify that the image is wrapped in an HTML image tag in your mail configuration, like this :
 `<img src="[your-signature-field]"/>`
 
-= How can i customize my signature field =
+= How do i include the signature image as an attachment ?  =
+
+If you want the signature image to be sent as an attachment to the email, just follow these steps : 
+
+1. add a "attachment" parameter to your field like this : `[signature your-signature-field attachment]`
+2. add the signature tag to the mail attachment section, like you would do for a file (see [this tutorial](http://contactform7.com/file-uploading-and-attachment/)) : `[your-file][your-signature-field]`
+
+= How can i customize my signature field ? =
 
 When building your signature field with CF7's field generator, you have several options you can add to the field shortcode.
 
@@ -133,6 +136,9 @@ Available methods are :
 = 4.0 =
 * Technical refactoring
     - now using jQuery : if you were using the old sigFieldsResize function for example, please update to its jQuery counterpart, see [FAQ](http://wordpress.org/plugins/contact-form-7-signature-addon/faq/)).
+    - new plugin architecture using [Wordpress Plugin Boilerplate](https://wppb.me/)
+* Dumped support for old CF7 versions
+* CF7 4.6+ is now made mandatory on plugin activation
 
 = 3.2.1 =
 * Fixed a bug when there's no submit button in form
