@@ -19,6 +19,8 @@
  */
 class Wpcf7_Signature_Admin {
 
+	const WPCF7_SIGNATURE_JS_CALLBACK = "$('div.wpcf7 > form').wpcf7ClearSignatures();";
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -108,13 +110,12 @@ class Wpcf7_Signature_Admin {
 			if ( !empty( $scanned[$i]) && $scanned[$i]['basetype'] == "signature"){
 				// We got one !
 				//Let's add the callback if needed
-			   	$JSCallback = "$('div.wpcf7 > form').wpcf7ClearSignatures();";
-			   	$WPCF7Callback = 'on_sent_ok: "'.$JSCallback.'"';
+			   	$WPCF7Callback = 'on_sent_ok: "'.$this::WPCF7_SIGNATURE_JS_CALLBACK.'"';
 			   	$settings = $properties['additional_settings'];
 
 			   	// first we need to get rid of the old callback if present
-			   	if (strpos($settings, $JSCallback) === 0){
-			   		$settings = substr($settings, strlen($JSCallback));
+			   	if (strpos($settings, $this::WPCF7_SIGNATURE_JS_CALLBACK) === 0){
+			   		$settings = substr($settings, strlen($this::WPCF7_SIGNATURE_JS_CALLBACK));
 			   	}
 
 			   	// and add the new one
@@ -226,6 +227,50 @@ class Wpcf7_Signature_Admin {
 			<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag into an image tag (<img src=\"%s\"/>)in the field on the Mail tab.", 'wpcf7-signature' ) ), '<strong><span class="mail-tag"></span></strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Remove old JS callback from properties when upgrading 
+	 * to 4.0 fior the first time
+	 *
+	 * @since    4.0.0
+	 */
+	public function remove_v3_js_callback($new_ver, $old_ver) {
+
+		if ( version_compare( $old_ver, '4.0-dev', '<' ) ) {
+			return;
+		}
+
+		// Looping through all forms
+		$posts = WPCF7_ContactForm::find( array(
+			'post_status' => 'any',
+			'posts_per_page' => -1,
+		) );
+
+		$oldJSCallback = "sigFieldsResize();";
+
+		foreach ( $posts as $post ) {
+			$props = $post->get_properties();
+			$newProps = array();
+			$needSave = false;
+
+			foreach ( $props as $prop => $value ) {
+
+				if ($prop == 'additional_settings'){
+					if (strpos($value, $oldJSCallback) !== 0){
+						$value = str_replace($oldJSCallback, $this::WPCF7_SIGNATURE_JS_CALLBACK, $value);
+						$needSave = true;
+					}
+				}
+
+				$newProps[$prop] = $value;
+			}
+
+			if ($needSave){
+				$post->set_properties($newProps);
+				$post->save();
+			}
+		}
 	}
 
 }

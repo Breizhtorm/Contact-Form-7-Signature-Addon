@@ -140,6 +140,8 @@ class Wpcf7_Signature {
 		// WPCF7
 		$this->loader->add_filter( 'wpcf7_contact_form_properties', $plugin_admin, 'contact_form_properties', 10, 2 );
 		$this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_tag_generator', 60 );
+		
+		//$this->loader->add_action( 'wpcf7_upgrade', $plugin_admin, 'remove_v3_js_callback', 10, 2 );
 
 	}
 
