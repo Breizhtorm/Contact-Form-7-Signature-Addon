@@ -58,24 +58,6 @@ class Wpcf7_Signature_Admin {
 	 *
 	 * @since    4.0.0
 	 */
-	public function check_upgrade() {
-		$plugin = get_plugin_data( dirname(__FILE__) . "/../signature.php" );
-
-		$old_ver = $plugin['Version'];
-		$new_ver = $this->version;
-
-		if ( $old_ver == $new_ver ) {
-			return;
-		}
-
-		do_action( 'wpcf7_signature_upgrade', $new_ver, $old_ver );
-	}
-
-	/**
-	 * Check if CF7 is installed
-	 *
-	 * @since    4.0.0
-	 */
 	public function check_dependencies() {
 
 		$plugins = array(

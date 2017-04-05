@@ -68,7 +68,7 @@ class Wpcf7_Signature {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'wpcf7-signature';
+		$this->plugin_name = 'contact-form-7-signature-addon';
 		$this->version = '4.0.0';
 
 		$this->load_dependencies();
@@ -140,9 +140,8 @@ class Wpcf7_Signature {
 		// WPCF7
 		$this->loader->add_filter( 'wpcf7_contact_form_properties', $plugin_admin, 'contact_form_properties', 10, 2 );
 		$this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_tag_generator', 60 );
-		
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'check_upgrade');
-		$this->loader->add_action( 'wpcf7_signature_upgrade', $plugin_admin, 'remove_v3_js_callback');
+
+		//$this->loader->add_action( 'wpcf7_signature_upgrade', $plugin_admin, 'remove_v3_js_callback');
 
 	}
 
