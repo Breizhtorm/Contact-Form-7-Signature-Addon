@@ -68,11 +68,12 @@ class Wpcf7_Signature {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'contact-form-7-signature-addon';
-		$this->version = '4.0.0';
+		$this->plugin_name = WPCF7_SIGNATURE_PLUGIN_NAME;
+		$this->version = WPCF7_SIGNATURE_VERSION;
 
 		$this->load_dependencies();
 		$this->set_locale();
+		$this->define_base_hooks();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 		$this->define_mail_hooks();
@@ -125,6 +126,23 @@ class Wpcf7_Signature {
 	}
 
 	/**
+	 * Register all of the hooks related to the plugin settings
+	 * of the plugin.
+	 *
+	 * @since    4.0.0
+	 * @access   private
+	 */
+	private function define_base_hooks() {
+
+		// Dependencies
+		$this->loader->add_action( 'tgmpa_register', $this, 'check_dependencies' );
+
+		// Plugin upgrade process
+		$this->loader->add_action( 'admin_init', $this, 'wpcf7_signature_upgrade' );
+
+	}
+
+	/**
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
@@ -135,13 +153,12 @@ class Wpcf7_Signature {
 
 		$plugin_admin = new Wpcf7_Signature_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'tgmpa_register', $plugin_admin, 'check_dependencies' );
-
 		// WPCF7
 		$this->loader->add_filter( 'wpcf7_contact_form_properties', $plugin_admin, 'contact_form_properties', 10, 2 );
 		$this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_tag_generator', 60 );
 
-		//$this->loader->add_action( 'wpcf7_signature_upgrade', $plugin_admin, 'remove_v3_js_callback');
+		// Replace old JS callbacks
+		$this->loader->add_action( 'wpcf7_signature_upgrade', $plugin_admin, 'remove_v3_js_callback', 90, 2);
 
 	}
 
@@ -220,6 +237,95 @@ class Wpcf7_Signature {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Get option, stored as a meta
+	 *
+	 * @since     4.0.0
+	 * @param     string    $name       Option name
+	 * @param     string    $default      Default value
+	 * @return    string    The option value
+	 */
+	public static function get_option( $name, $default = false ) {
+		$option = get_option( WPCF7_SIGNATURE_PLUGIN_NAME );
+
+		if ( false === $option ) {
+			return $default;
+		}
+
+		if ( isset( $option[$name] ) ) {
+			return $option[$name];
+		} else {
+			return $default;
+		}
+	}
+
+	/**
+	 * Store option as a meta
+	 *
+	 * @since     4.0.0
+	 * @param     string    $name       Option name
+	 * @param     string    $value      Option value
+	 */
+	public static function update_option( $name, $value ) {
+		$option = get_option( WPCF7_SIGNATURE_PLUGIN_NAME );
+		$option = ( false === $option ) ? array() : (array) $option;
+		$option = array_merge( $option, array( $name => $value ) );
+		update_option( WPCF7_SIGNATURE_PLUGIN_NAME, $option );
+	}
+
+	/**
+	 * Check for plugin updates
+	 *
+	 * @since     4.0.0
+	 */
+	public function wpcf7_signature_upgrade() {
+		$old_ver = Wpcf7_Signature::get_option( 'version', '0' );
+		$new_ver = WPCF7_SIGNATURE_VERSION;
+
+		if ( $old_ver == $new_ver ) {
+			return;
+		}
+
+		do_action( 'wpcf7_signature_upgrade', $new_ver, $old_ver );
+
+		Wpcf7_Signature::update_option( 'version', $new_ver );
+	}
+
+	/**
+	 * Check if CF7 is installed
+	 *
+	 * @since    4.0.0
+	 */
+	public function check_dependencies() {
+
+		$plugins = array(
+
+			array(
+				'name'      => 'Contact Form 7',
+				'slug'      => 'contact-form-7',
+				'required'  => true,
+				'version'	=> '4.6'
+			),
+
+		);
+
+		$config = array(
+			'id'           => 'wpcf7-signature',
+			'default_path' => '',
+			'menu'         => 'tgmpa-install-plugins',
+			'parent_slug'  => 'plugins.php',
+			'capability'   => 'manage_options',
+			'has_notices'  => true,
+			'dismissable'  => true,
+			'dismiss_msg'  => '',
+			'is_automatic' => false,
+			'message'      => ''
+		);
+
+		tgmpa( $plugins, $config );
+
 	}
 
 }

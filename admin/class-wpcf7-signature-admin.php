@@ -54,41 +54,6 @@ class Wpcf7_Signature_Admin {
 	}
 
 	/**
-	 * Check if CF7 is installed
-	 *
-	 * @since    4.0.0
-	 */
-	public function check_dependencies() {
-
-		$plugins = array(
-
-			array(
-				'name'      => 'Contact Form 7',
-				'slug'      => 'contact-form-7',
-				'required'  => true,
-				'version'	=> '4.6'
-			),
-
-		);
-
-		$config = array(
-			'id'           => 'wpcf7-signature',
-			'default_path' => '',
-			'menu'         => 'tgmpa-install-plugins',
-			'parent_slug'  => 'plugins.php',
-			'capability'   => 'manage_options',
-			'has_notices'  => true,
-			'dismissable'  => true,
-			'dismiss_msg'  => '',
-			'is_automatic' => false,
-			'message'      => ''
-		);
-
-		tgmpa( $plugins, $config );
-
-	}
-
-	/**
 	 * Modify contact form properties for signatures
 	 *
 	 * @since    4.0.0
@@ -231,13 +196,13 @@ class Wpcf7_Signature_Admin {
 
 	/**
 	 * Remove old JS callback from properties when upgrading 
-	 * to 4.0 fior the first time
+	 * to 4.0 for the first time
 	 *
 	 * @since    4.0.0
 	 */
 	public function remove_v3_js_callback($new_ver, $old_ver) {
 
-		if ( version_compare( $old_ver, '4.0-dev', '<' ) ) {
+		if ( version_compare( $old_ver, '4.0-dev', '>=' ) ) {
 			return;
 		}
 
