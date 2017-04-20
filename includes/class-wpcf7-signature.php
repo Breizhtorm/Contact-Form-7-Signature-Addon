@@ -138,7 +138,7 @@ class Wpcf7_Signature {
 		$this->loader->add_action( 'tgmpa_register', $this, 'check_dependencies' );
 
 		// Plugin upgrade process
-		$this->loader->add_action( 'admin_init', $this, 'wpcf7_signature_upgrade' );
+		$this->loader->add_action( 'admin_init', $this, 'wpcf7_signature_upgrade', 10 );
 
 	}
 
@@ -158,7 +158,7 @@ class Wpcf7_Signature {
 		$this->loader->add_action( 'wpcf7_admin_init', $plugin_admin, 'add_tag_generator', 60 );
 
 		// Replace old JS callbacks
-		$this->loader->add_action( 'wpcf7_signature_upgrade', $plugin_admin, 'remove_v3_js_callback', 90, 2);
+		$this->loader->add_action( 'wpcf7_signature_upgrade', $plugin_admin, 'remove_v3_js_callback', 10, 2);
 
 	}
 

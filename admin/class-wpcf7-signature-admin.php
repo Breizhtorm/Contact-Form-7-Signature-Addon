@@ -78,12 +78,7 @@ class Wpcf7_Signature_Admin {
 			   	$WPCF7Callback = 'on_sent_ok: "'.$this::WPCF7_SIGNATURE_JS_CALLBACK.'"';
 			   	$settings = $properties['additional_settings'];
 
-			   	// first we need to get rid of the old callback if present
-			   	if (strpos($settings, $this::WPCF7_SIGNATURE_JS_CALLBACK) === 0){
-			   		$settings = substr($settings, strlen($this::WPCF7_SIGNATURE_JS_CALLBACK));
-			   	}
-
-			   	// and add the new one
+			   	// No callback found, let's do this !
 			    if(!strstr($settings, addslashes($WPCF7Callback)) && !strstr($settings, $WPCF7Callback)){
 
 			    	if (strlen($settings) > 0)
@@ -212,9 +207,10 @@ class Wpcf7_Signature_Admin {
 			'posts_per_page' => -1,
 		) );
 
-		$oldJSCallback = "sigFieldsResize();";
+		$oldJSCallback = "sigFieldsClear();";
 
 		foreach ( $posts as $post ) {
+
 			$props = $post->get_properties();
 			$newProps = array();
 			$needSave = false;
@@ -222,8 +218,9 @@ class Wpcf7_Signature_Admin {
 			foreach ( $props as $prop => $value ) {
 
 				if ($prop == 'additional_settings'){
-					if (strpos($value, $oldJSCallback) !== 0){
-						$value = str_replace($oldJSCallback, $this::WPCF7_SIGNATURE_JS_CALLBACK, $value);
+					if(strstr($value, $oldJSCallback)){
+						$oldJSCallback = 'on_sent_ok: "'.$oldJSCallback.'"';
+						$value = str_replace($oldJSCallback, "", $value);
 						$needSave = true;
 					}
 				}
