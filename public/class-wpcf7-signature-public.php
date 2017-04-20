@@ -185,7 +185,7 @@ class Wpcf7_Signature_Public {
 				<input %2$s id="wpcf7_input_%1$s"/><input %9$s id="wpcf7_input_%1$s_attachment"/><input %10$s id="wpcf7_input_%1$s_inline"/>%3$s
 			</span>
 			',
-			sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ), $atts_canvas, $atts_attach, $atts_inline );
+			sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'contact-form-7-signature-addon' ), $atts_canvas, $atts_attach, $atts_inline );
 
 		return $html;
 	}
