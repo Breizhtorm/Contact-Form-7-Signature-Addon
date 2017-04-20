@@ -149,7 +149,7 @@ So you only have to replace the former functions by this new ones.
     - new plugin architecture using [Wordpress Plugin Boilerplate](https://wppb.me/)
 * Dumped support for old CF7 versions
 * CF7 4.6+ is now made mandatory on plugin activation
-* It is possible to use base 64 encoded inline image again
+* It is possible to use base 64 encoded inline image as an option
 * Storing plugin version in WP options for upgrade purpose
 
 = 3.2.1 =

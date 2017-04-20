@@ -64,6 +64,10 @@ class Wpcf7_Signature_Admin {
 	   		return $properties;
 	   	}
 
+	   	if (!class_exists('WPCF7_FormTagsManager')){
+	   		return $properties;
+	   	}
+
 	   	// We need to know if the current form has a signature field
 	   	$manager = WPCF7_FormTagsManager::get_instance();
 	   	$scanned = $manager->scan( $properties['form'] );

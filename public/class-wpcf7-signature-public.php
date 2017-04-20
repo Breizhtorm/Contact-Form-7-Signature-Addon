@@ -80,10 +80,12 @@ class Wpcf7_Signature_Public {
 	 * @since    4.0.0
 	 */
 	public function add_signature_shortcode_handler() {
-		wpcf7_add_form_tag(
-			array( 'signature', 'signature*' ),
-			array($this, 'signature_shortcode_handler'), true 
-		);
+		if (function_exists('wpcf7_add_form_tag')){
+			wpcf7_add_form_tag(
+				array( 'signature', 'signature*' ),
+				array($this, 'signature_shortcode_handler'), true 
+			);
+		}
 	}
 
 	/**
