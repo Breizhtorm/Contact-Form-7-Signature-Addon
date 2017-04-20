@@ -312,7 +312,7 @@ class Wpcf7_Signature {
 		);
 
 		$config = array(
-			'id'           => 'wpcf7-signature',
+			'id'           => 'contact-form-7-signature-addon',
 			'default_path' => '',
 			'menu'         => 'tgmpa-install-plugins',
 			'parent_slug'  => 'plugins.php',

@@ -151,6 +151,7 @@ So you only have to replace the former functions by this new ones.
 * CF7 4.6+ is now made mandatory on plugin activation
 * It is possible to use base 64 encoded inline image as an option
 * Storing plugin version in WP options for upgrade purpose
+* Changed text domain to match plugin slug, and now use translate.wordpress.org
 
 = 3.2.1 =
 * Fixed a bug when there's no submit button in form

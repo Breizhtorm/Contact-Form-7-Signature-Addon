@@ -13,7 +13,7 @@
  * Author: Breizhtorm
  * Author URI: http://www.breizhtorm.fr
  * Version: 4.0.0
- * Text Domain: wpcf7-signature
+ * Text Domain: contact-form-7-signature-addon
  * Domain Path: /languages
 */
 

@@ -107,7 +107,7 @@ class Wpcf7_Signature_Admin {
 
 		if (class_exists('WPCF7_TagGenerator')) {
 			$tag_generator = WPCF7_TagGenerator::get_instance();
-			$tag_generator->add( 'signature', __( 'signature', 'wpcf7-signature' ),array($this,'tag_generator_signature') );
+			$tag_generator->add( 'signature', __( 'signature', 'contact-form-7-signature-addon' ),array($this,'tag_generator_signature') );
 		}
 		
 	}
@@ -165,12 +165,12 @@ class Wpcf7_Signature_Admin {
 			</tr>
 
 			<tr>
-			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-color' ); ?>"><?php echo esc_html( __( 'Color attribute', 'wpcf7-signature' ) ); ?></label></th>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-color' ); ?>"><?php echo esc_html( __( 'Color attribute', 'contact-form-7-signature-addon' ) ); ?></label></th>
 			<td><input type="text" name="color" class="heightvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-color' ); ?>" /></td>
 			</tr>
 
 			<tr>
-			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-background' ); ?>"><?php echo esc_html( __( 'Background attribute', 'wpcf7-signature' ) ); ?></label></th>
+			<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-background' ); ?>"><?php echo esc_html( __( 'Background attribute', 'contact-form-7-signature-addon' ) ); ?></label></th>
 			<td><input type="text" name="background" class="heightvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-background' ); ?>" /></td>
 			</tr>
 
@@ -188,7 +188,7 @@ class Wpcf7_Signature_Admin {
 
 			<br class="clear" />
 
-			<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag into an image tag (<img src=\"%s\"/>)in the field on the Mail tab.", 'wpcf7-signature' ) ), '<strong><span class="mail-tag"></span></strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
+			<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag into an image tag (<img src=\"%s\"/>)in the field on the Mail tab.", 'contact-form-7-signature-addon' ) ), '<strong><span class="mail-tag"></span></strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
 		</div>
 		<?php
 	}
