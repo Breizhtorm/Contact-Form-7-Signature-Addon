@@ -112,19 +112,53 @@ class Wpcf7_Signature_Mail {
 
 		foreach ($posted_data as $key => $data) {
 			if (is_string($data) && strrpos($data, "data:image/png;base64", -strlen($data)) !== FALSE){
+
+		        // Do we need to treat it as inline data ?
+		        if ($posted_data[$key."-inline"] == 1){
+
+		        	// Sending a base64 encoded inline image
+		        	$posted_data[$key] = $data;
+		        	return $posted_data;
+
+		        }
+
 		        $data_pieces = explode(",", $data);
 		        $encoded_image = $data_pieces[1];
 		        $decoded_image = base64_decode($encoded_image);
 		        $filename = sanitize_file_name(wpcf7_canonicalize($key."-".time().".png"));
 
+		        $signature_dir = trailingslashit($this->signature_dir());
+
 		        // Do we need to treat it as attachement ?
 		        $is_attachment = $posted_data[$key."-attachment"] == 1;
 
-		        $signature_dir = trailingslashit($this->signature_dir());
+		        if ($is_attachment){
+		        	// Preparing to send signature as attachement
 
-		        if (!$is_attachment){
+		        	wpcf7_init_uploads(); // Confirm upload dir
+					$uploads_dir = wpcf7_upload_tmp_dir();
+					$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
+					$filename = wp_unique_filename( $uploads_dir, $filename );
 
-		        	// Sending signature image inline (default)
+					$filepath = trailingslashit( $uploads_dir ) . $filename;
+
+			       	// Writing signature
+			        if ( $handle = @fopen( $filepath, 'w' ) ) {
+						fwrite( $handle, $decoded_image );
+						fclose( $handle );
+			        	@chmod( $filepath, 0400 ); // Make sure the uploaded file is only readable for the owner process
+					}
+
+					if (file_exists($filepath)){
+
+		        		$posted_data[$key] = $filepath;
+
+			        }else{
+			        	error_log("Cannot create signature file as attachment : ".$filepath);
+			        }
+		        }else{
+
+		        	// Sending signature asa server image
 
 			        if( !file_exists( $signature_dir ) ){ // Creating directory and htaccess file
 			    		if (wp_mkdir_p( $signature_dir )){
@@ -159,30 +193,6 @@ class Wpcf7_Signature_Mail {
 			        	error_log("Cannot create signature file : ".$filepath);
 			        }
 
-		        }else{
-		        	// Preparing to send signature as attachement
-
-		        	wpcf7_init_uploads(); // Confirm upload dir
-					$uploads_dir = wpcf7_upload_tmp_dir();
-					$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
-					$filename = wp_unique_filename( $uploads_dir, $filename );
-
-					$filepath = trailingslashit( $uploads_dir ) . $filename;
-
-			       	// Writing signature
-			        if ( $handle = @fopen( $filepath, 'w' ) ) {
-						fwrite( $handle, $decoded_image );
-						fclose( $handle );
-			        	@chmod( $filepath, 0400 ); // Make sure the uploaded file is only readable for the owner process
-					}
-
-					if (file_exists($filepath)){
-
-		        		$posted_data[$key] = $filepath;
-
-			        }else{
-			        	error_log("Cannot create signature file as attachment : ".$filepath);
-			        }
 		        }
 		        
 			}

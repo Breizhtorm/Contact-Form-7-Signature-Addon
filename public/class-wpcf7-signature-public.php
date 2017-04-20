@@ -161,6 +161,13 @@ class Wpcf7_Signature_Public {
 		$atts_attach['name'] = $tag->name . "-attachment";
 		$atts_attach = wpcf7_format_atts( $atts_attach );
 
+		/* Inline attributes */
+
+		$atts_inline['value'] = $tag->has_option( 'inline' );
+		$atts_inline['type'] = 'hidden';
+		$atts_inline['name'] = $tag->name . "-inline";
+		$atts_inline = wpcf7_format_atts( $atts_inline );
+
 		$html = sprintf(
 			'<div class="wpcf7-form-control-signature-global-wrap" data-field-id="%1$s">
 				<div class="wpcf7-form-control-signature-wrap" style="width:%5$spx;height:%6$spx;">
@@ -173,10 +180,10 @@ class Wpcf7_Signature_Public {
 				</div>
 			</div>
 			<span class="wpcf7-form-control-wrap wpcf7-form-control-signature-input-wrap %1$s">
-				<input %2$s id="wpcf7_input_%1$s"/><input %9$s id="wpcf7_input_%1$s_attachment"/>%3$s
+				<input %2$s id="wpcf7_input_%1$s"/><input %9$s id="wpcf7_input_%1$s_attachment"/><input %10$s id="wpcf7_input_%1$s_inline"/>%3$s
 			</span>
 			',
-			sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ), $atts_canvas, $atts_attach );
+			sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'wpcf7-signature' ), $atts_canvas, $atts_attach, $atts_inline );
 
 		return $html;
 	}
