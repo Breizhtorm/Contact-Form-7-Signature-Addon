@@ -5,7 +5,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.7
-Stable tag: 3.2.1
+Stable tag: 4.0
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -17,7 +17,7 @@ This plugin adds a new field type to the Contact Form 7 plugin and allows users 
 
 = News =
 * Version 4 is out, with a major technical refactoring of the plugin. If you're a theme developer, please review the FAQ to see what changed (specially if you were using the provided javascript functions).
-* It is also now possible to use Base64 encoded Inline images (at your own risk because of mail clients compatibility issues).
+* It is also now possible to use Base64 encoded inline images (at your own risk because of mail clients compatibility issues).
 
 = Compatibility =
 This plugin requires version 4.6 or higher of the "Contact Form 7" plugin.
@@ -139,7 +139,7 @@ Available methods are now :
 `$('div.wpcf7 > form').wpcf7ClearSignatures();` to clear fields
 `$('div.wpcf7 > form').wpcf7InitSignatures();` to reload fields
 
-So you only have to replace the former functions by this new ones.
+So you only have to replace the former functions by this new ones. Don't forget to have a look at your contact form *additional settings* tab, where there's usually some code to clear the fields on submit.
 
 == Changelog ==
 
@@ -147,11 +147,11 @@ So you only have to replace the former functions by this new ones.
 * Technical refactoring
     - now using jQuery : if you were using the old sigFieldsResize function for example, please update to its jQuery counterpart, see [FAQ](http://wordpress.org/plugins/contact-form-7-signature-addon/faq/).
     - new plugin architecture using [Wordpress Plugin Boilerplate](https://wppb.me/)
+    - text domain changed to respect Wordpress translation guidelines, so you might have to update your .po files
 * Dumped support for old CF7 versions
 * CF7 4.6+ is now made mandatory on plugin activation
 * It is possible to use base 64 encoded inline image as an option
 * Storing plugin version in WP options for upgrade purpose
-* Changed text domain to match plugin slug, and now use translate.wordpress.org
 
 = 3.2.1 =
 * Fixed a bug when there's no submit button in form
@@ -177,76 +177,6 @@ So you only have to replace the former functions by this new ones.
 
 = 2.7 =
 * Updated signature pad library to v1.5.3 (fixing a few mobile issues)
-
-= 2.6.8 =
-* Full i18n support
-
-= 2.6.7 =
-* Fixed text domain loading issue
-
-= 2.6.6 =
-* CF7 Autosaver compatibility
-
-= 2.6.5 =
-* Changed the way plugin assets are loaded
-* Added a note about the plugin to require wp_footer() in the theme.
-* Removed unused action call
-
-= 2.6.4 =
-* Plugin scripts are now loaded in the footer in order to prevent DOM loading issues.
-
-= 2.6.3 =
-* Bugfix : Shortcode options "id:" and "class:" were not taken into account
-
-= 2.6.2 =
-* Automatically get rid of rubbish JS added through 2.5 & 2.6 versions, so plugin users won't have to do it
-
-= 2.6.1 =
-* Bugfix : additional settings JS callback was called once more each time the form settings were submitted
-* Bugfix : fixed an issue with submit buttons not working when there's more than one form in a page
-* Bugfix : fixed an issue with single forms without a signature field
-
-= 2.6 =
-* REALLY fixed the device ratio bug on HDPi devices like iPads
-* Fixed a major issue with 2.5 where the field was "growing" on window resize (facepalm)
-* Refactored field layout
-
-= 2.5 =
-* Updated signature pad library to v1.4.0
-* Fixed a bug with device ratio not being properly taken into account sometimes
-* Fixed a bug where signature fields were not cleared after successful submit
-* Fixed a bug where cleared signature fields were not correctly validating
-* Refactored JavaScript for easier plugin maintenance
-
-= 2.4.1 =
-* Fixed a major issue where mandatory signature fields were note validating correctly (since CF7 4.1)
-
-= 2.4 =
-* Fixed CF7 older versions compatibility issues (down to at least CF7 v3.5)
-* Removed useless plugin own css
-* New CSS class added around the signature field for easier styling
-* Updated screenshots, FAQ and Readme
-
-= 2.3 =
-* Fixed the plugin to match the new CF7 4.2 code and UI
-* Fixed a bug with signature clearing and form validation
-
-= 2.2 =
-* Fixed a bug where CF7 form submission was blocked sometimes
-
-= 2.1 =
-* Fixed a bug where only the last signature of a form was sent
-
-= 2.0 =
-* Signature are now stored as image files for a better compatibility with email clients
-
-= 1.1 =
-* Bug fix : field configuration form not displaying in admin
-* Bug fix : Clear button not working
-* More than one signature field available in forms now
-
-= 1.0 =
-* Initial plugin release.
 
 == Upgrade Notice ==
 
