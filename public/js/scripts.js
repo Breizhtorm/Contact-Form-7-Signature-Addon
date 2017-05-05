@@ -58,6 +58,11 @@
 		});
 	}
 
+	// Getter for signatures object
+	$.fn.wpcf7GetSignatures = function(){
+		return signatures;
+	}
+
 	// Resize canvas fields
 	$.fn.wpcf7ResizeSignatures = function(){
 
