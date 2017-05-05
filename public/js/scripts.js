@@ -1,8 +1,8 @@
+var signatures = [];
+
 (function($) {
 
 	'use strict';
-
-	var signatures = [];
 
 	// Main function to initialize signature fields
 	$.fn.wpcf7InitSignatures = function() {
@@ -56,11 +56,6 @@
 			});
 
 		});
-	}
-
-	// Getter for signatures object
-	$.fn.wpcf7GetSignatures = function(){
-		return signatures;
 	}
 
 	// Resize canvas fields
