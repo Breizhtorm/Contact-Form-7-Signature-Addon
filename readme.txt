@@ -5,7 +5,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.7
-Stable tag: 4.0.1
+Stable tag: 4.1
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -129,6 +129,12 @@ window.onresize = function(){
 };
 `
 
+= Is it possible to change the writing behaviour ? =
+
+Sure, by using the signature pad's [available options](https://github.com/szimek/signature_pad#options) directly like this:
+
+`[signature signature-666 dotSize:1.2 minWidth:1 maxWidth:5 throttle:0 velocityFilterWeight:0.1]`
+
 = Since version 4.0 i got Javascript errors. What changed and what can i do ? =
 
 The main thing that changed is the way you can interact with the plugin. There's now a jQuery plugin for that, and i got rid of all the old JS functions like sigFieldsResize and sigFieldsClear.
@@ -139,9 +145,13 @@ Available methods are now :
 `$('div.wpcf7 > form').wpcf7ClearSignatures();` to clear fields
 `$('div.wpcf7 > form').wpcf7InitSignatures();` to reload fields
 
-So you only have to replace the former functions by this new ones. Don't forget to have a look at your contact form *additional settings* tab, where there's usually some code to clear the fields on submit.
+So you only have to replace the former functions by these new ones. Don't forget to have a look at your contact form *additional settings* tab, where there's usually some code to clear the fields on submit.
 
 == Changelog ==
+
+= 4.1 =
+* Updated signature pad library to 2.1.1
+* Added signature pad options to the shortocode
 
 = 4.0.1 =
 * Added a fix for Conditional Fields plugin to be compatible again

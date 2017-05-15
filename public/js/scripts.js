@@ -27,6 +27,16 @@ var signatures = [];
 				options['penColor'] = $canvas.data("color");
 				options['backgroundColor'] = $canvas.data("background");
 
+				// Extra options
+				var extras = $canvas.data("extras");
+				if (extras != null && typeof(extras) != 'undefined'){
+					for (var key in extras) {
+						if (extras.hasOwnProperty(key)) {
+							options[key] = extras[key];
+						}
+					}
+				}
+
 				// Canvas init
 				var signature = new SignaturePad(canvas, options);
 

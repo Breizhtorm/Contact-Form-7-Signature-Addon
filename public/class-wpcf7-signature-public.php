@@ -144,7 +144,7 @@ class Wpcf7_Signature_Public {
 		/* Canvas attributes */
 
 		// Pen color
-		$atts_canvas['data-color'] = $tag->get_option( 'color', '#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', true );
+		$atts_canvas['data-color'] = $tag->get_option( 'color', '', true );
 		
 		// Background color
 		$atts_canvas['data-background'] = $tag->get_option( 'background', '#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', true );
@@ -153,6 +153,19 @@ class Wpcf7_Signature_Public {
 
 		$canvas_class = $tag->name;
 		$atts_canvas['class'] = $tag->get_class_option( $canvas_class );
+
+		// Signature pad extra options
+		$pad_options = ['dotSize', 'minWidth', 'maxWidth', 'throttle', 'velocityFilterWeight'];
+		$extras = [];
+		foreach ($pad_options as $pad_option) {
+			$val = $tag->get_option( $pad_option, '', true );
+			if ($val !== false){
+				$extras[$pad_option] = $val;
+			}
+		}
+		if (count($extras) > 0){
+			$atts_canvas['data-extras'] = json_encode($extras);
+		}		
 
 		$atts_canvas = wpcf7_format_atts( $atts_canvas );
 
