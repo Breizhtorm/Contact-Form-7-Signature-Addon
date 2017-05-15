@@ -144,7 +144,7 @@ class Wpcf7_Signature_Public {
 		/* Canvas attributes */
 
 		// Pen color
-		$atts_canvas['data-color'] = $tag->get_option( 'color', '', true );
+		$atts_canvas['data-color'] = $tag->get_option( 'color', '#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', true );
 		
 		// Background color
 		$atts_canvas['data-background'] = $tag->get_option( 'background', '#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})', true );
