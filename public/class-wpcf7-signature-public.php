@@ -155,8 +155,8 @@ class Wpcf7_Signature_Public {
 		$atts_canvas['class'] = $tag->get_class_option( $canvas_class );
 
 		// Signature pad extra options
-		$pad_options = ['dotSize', 'minWidth', 'maxWidth', 'throttle', 'velocityFilterWeight'];
-		$extras = [];
+		$pad_options = array('dotSize', 'minWidth', 'maxWidth', 'throttle', 'velocityFilterWeight');
+		$extras = array();
 		foreach ($pad_options as $pad_option) {
 			$val = $tag->get_option( $pad_option, '', true );
 			if ($val !== false){
