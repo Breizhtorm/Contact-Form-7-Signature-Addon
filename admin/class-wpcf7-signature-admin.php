@@ -79,7 +79,7 @@ class Wpcf7_Signature_Admin {
 			if ( !empty( $scanned[$i]) && $scanned[$i]['basetype'] == "signature"){
 				// We got one !
 				//Let's add the callback if needed
-			   	$WPCF7Callback = 'on_sent_ok: "'.$this::WPCF7_SIGNATURE_JS_CALLBACK.'"';
+			   	$WPCF7Callback = 'on_sent_ok: "'.self::WPCF7_SIGNATURE_JS_CALLBACK.'"';
 			   	$settings = $properties['additional_settings'];
 
 			   	// No callback found, let's do this !

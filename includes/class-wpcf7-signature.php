@@ -281,7 +281,7 @@ class Wpcf7_Signature {
 	 * @since     4.0.0
 	 */
 	public function wpcf7_signature_upgrade() {
-		$old_ver = Wpcf7_Signature::get_option( 'version', '0' );
+		$old_ver = self::get_option( 'version', '0' );
 		$new_ver = WPCF7_SIGNATURE_VERSION;
 
 		if ( $old_ver == $new_ver ) {
@@ -290,7 +290,7 @@ class Wpcf7_Signature {
 
 		do_action( 'wpcf7_signature_upgrade', $new_ver, $old_ver );
 
-		Wpcf7_Signature::update_option( 'version', $new_ver );
+		self::update_option( 'version', $new_ver );
 	}
 
 	/**

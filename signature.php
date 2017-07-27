@@ -17,7 +17,7 @@
  * Domain Path: /languages
 */
 
-define( 'WPCF7_SIGNATURE_VERSION', '4.1.1' );
+define( 'WPCF7_SIGNATURE_VERSION', '4.1.2' );
 define( 'WPCF7_SIGNATURE_PLUGIN_NAME', 'contact-form-7-signature-addon' );
 
 // If this file is called directly, abort.
