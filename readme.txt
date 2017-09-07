@@ -5,7 +5,7 @@ Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
 Tested up to: 4.8
-Stable tag: 4.1.2
+Stable tag: 4.2
 
 Easily add an handwritten signature field to Contact Form 7
 
