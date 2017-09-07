@@ -149,6 +149,9 @@ So you only have to replace the former functions by these new ones. Don't forget
 
 == Changelog ==
 
+= 4.2 =
+* Compatibility with CF7 v4.9 (on_sent_ok is deprecated)
+
 = 4.1.2 =
 * Bugfix : syntax error on PHP 5.2 and lower
 

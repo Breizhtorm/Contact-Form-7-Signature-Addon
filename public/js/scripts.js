@@ -92,6 +92,13 @@ var signatures = [];
 		$('div.wpcf7 > form').wpcf7InitSignatures();
 	});
 
+	// CF7 v4.9 callbacks
+	$(document).on( 'wpcf7mailsent', function( event ) {
+
+		// Clearing signatures
+		$('div.wpcf7 > form').wpcf7ClearSignatures();
+	});
+
 })(jQuery);
 
 

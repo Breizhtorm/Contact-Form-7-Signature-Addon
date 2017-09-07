@@ -60,6 +60,12 @@ class Wpcf7_Signature_Admin {
 	 */
 	public function contact_form_properties( $properties, $instance ) 
 	{
+
+		// No need anymore with CF7 v4.9 and above
+		if (version_compare(WPCF7_VERSION, '4.9', '>=')){
+			return $properties;
+		}
+
 	   	if (! is_array($properties)){
 	   		return $properties;
 	   	}
@@ -205,6 +211,11 @@ class Wpcf7_Signature_Admin {
 			return;
 		}
 
+		// No need anymore with CF7 v4.9 and above
+		if (version_compare(WPCF7_VERSION, '4.9', '>=')){
+			return;
+		}
+
 		// Looping through all forms
 		$posts = WPCF7_ContactForm::find( array(
 			'post_status' => 'any',
@@ -224,6 +235,50 @@ class Wpcf7_Signature_Admin {
 				if ($prop == 'additional_settings'){
 					if(strstr($value, $oldJSCallback)){
 						$oldJSCallback = 'on_sent_ok: "'.$oldJSCallback.'"';
+						$value = str_replace($oldJSCallback, "", $value);
+						$needSave = true;
+					}
+				}
+
+				$newProps[$prop] = $value;
+			}
+
+			if ($needSave){
+				$post->set_properties($newProps);
+				$post->save();
+			}
+		}
+	}
+
+	/**
+	 * Remove on_sent_ok callback when upgrading to 4.2,  
+	 * as it is deprecated in CF7 4.9
+	 *
+	 * @since    4.2.0
+	 */
+	public function remove_on_sent_ok($new_ver, $old_ver) {
+
+		if ( version_compare( $old_ver, '4.2-dev', '>=' ) ) {
+			return;
+		}
+
+		// Looping through all forms
+		$posts = WPCF7_ContactForm::find( array(
+			'post_status' => 'any',
+			'posts_per_page' => -1,
+		) );
+
+		foreach ( $posts as $post ) {
+
+			$props = $post->get_properties();
+			$newProps = array();
+			$needSave = false;
+
+			foreach ( $props as $prop => $value ) {
+
+				if ($prop == 'additional_settings'){
+					if(strstr($value, Wpcf7_Signature_Admin::WPCF7_SIGNATURE_JS_CALLBACK)){
+						$oldJSCallback = 'on_sent_ok: "'.Wpcf7_Signature_Admin::WPCF7_SIGNATURE_JS_CALLBACK.'"';
 						$value = str_replace($oldJSCallback, "", $value);
 						$needSave = true;
 					}

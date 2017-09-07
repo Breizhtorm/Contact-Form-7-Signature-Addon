@@ -160,6 +160,9 @@ class Wpcf7_Signature {
 		// Replace old JS callbacks
 		$this->loader->add_action( 'wpcf7_signature_upgrade', $plugin_admin, 'remove_v3_js_callback', 10, 2);
 
+		// Remove on_sent_ok callback, deprecated in CF7 4.9
+		$this->loader->add_action( 'wpcf7_signature_upgrade', $plugin_admin, 'remove_on_sent_ok', 10, 2);
+
 	}
 
 	/**
