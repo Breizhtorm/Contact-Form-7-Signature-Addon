@@ -4,8 +4,8 @@ Donate link: http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.h
 Contributors: tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
-Tested up to: 4.8
-Stable tag: 4.2
+Tested up to: 5.0
+Stable tag: 4.2.1
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -44,6 +44,7 @@ This plugin requires the Contact Form 7 plugin.
 5. Follow the instructions on the page
 
 If you want the signature image to be included in the body of your emails, just put an image tag which src attribute is set to be the content of your field, just like this :
+
 `<img src="[your-signature-field]"/>`
 
 If you want the signature image to be sent as an attachment to the email, just follow these steps : 
@@ -65,16 +66,9 @@ First things first : verify that your email is sent in HTML format. In CF7, ther
 Then verify that the image is wrapped in an HTML image tag in your mail configuration, like this :
 `<img src="[your-signature-field]"/>`
 
-= How do i include the signature image as an attachment ?  =
-
-If you want the signature image to be sent as an attachment to the email, just follow these steps : 
-
-1. add a "attachment" parameter to your field like this : `[signature your-signature-field attachment]`
-2. add the signature tag to the mail attachment section, like you would do for a file (see [this tutorial](http://contactform7.com/file-uploading-and-attachment/)) : `[your-file][your-signature-field]`
-
 = And what if i want to use a Base64 encoded inline image in my email instead ?  =
 
-If you want the signature image to be sent as an attachment to the email, just follow these steps : 
+This is not a very good idea, but just in case this is your only solution : 
 
 1. add a "inline" parameter to your field like this : `[signature your-signature-field inline]`
 2. include the image in the body of your email, like you would normally do : `<img src="[your-signature-field]"/>`
@@ -94,25 +88,25 @@ ID and class :
 
 Use CSS like you would do for any other field in your form. 
 For example, using the field wrapper, you can add a border like this : 
-`
+```
 .wpcf7-form-control-signature-body canvas{
 	border: 1px dotted #BADA55;
 }
-`
+```
 
 = How do i make my signature field responsive ? =
 
 It depends on your form layout but once again, you can do this by using basic CSS instructions. The plugin will deal with window size and device orientation automatically updating itself to match the right size.
 
 The only thing you have to do is override width and/or height styles *to the field wrapper, not the canvas*, like this :
-`
+```
 @media screen and (max-width: 768px) {
     .wpcf7-form-control-signature-wrap {
         width:100% !important;
     }
 }
 ...
-`
+```
 
 = How do i change my field's colors ? =
 
@@ -123,11 +117,11 @@ There are options for that in the field settings (only hex color supported for t
 = The field is not working well after my desktop browser window was resized or after orientation change on my mobile. How can i fix that ? =
 
 The signature field needs to be "reloaded" too when its container's size changes, but you should be aware that it will also clear its content. I assume this is your responsability to do so. The plugin provides a jQuery function that you can call from your theme's script file :
-`
+```
 window.onresize = function(){
     $('div.wpcf7 > form').wpcf7ResizeSignatures();
 };
-`
+```
 
 = Is it possible to change the writing behaviour ? =
 
@@ -148,6 +142,9 @@ Available methods are now :
 So you only have to replace the former functions by these new ones. Don't forget to have a look at your contact form *additional settings* tab, where there's usually some code to clear the fields on submit.
 
 == Changelog ==
+
+= 4.2.1 =
+* Better compatibility with other CF7 plugins
 
 = 4.2 =
 * Compatibility with CF7 v4.9 (on_sent_ok is deprecated)

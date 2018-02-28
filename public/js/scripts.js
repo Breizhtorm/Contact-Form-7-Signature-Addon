@@ -11,8 +11,6 @@ var signatures = [];
 
 		return this.each(function(i, form){
 
-			var submit = $(form).find('input.wpcf7-submit')[0];
-
 			$(form).find('.wpcf7-form-control-signature-global-wrap').each(function(j, wrapper){
 				var $canvas = $(wrapper).find('canvas'), 
 					$clear = $(wrapper).find('input[type=button]'),
@@ -57,11 +55,9 @@ var signatures = [];
 				});
 
 				// Submit Event Listener
-				if (submit != null && typeof(submit) != 'undefined'){
-					submit.addEventListener("click", function(){
-						sigObj.beforeSubmit();
-					}, false);
-				}
+				$(form).on('submit', function(){
+					sigObj.beforeSubmit();
+				});
 
 			});
 
