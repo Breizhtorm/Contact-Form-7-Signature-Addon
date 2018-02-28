@@ -64,6 +64,7 @@ If you want the signature image to be sent as an attachment to the email, just f
 First things first : verify that your email is sent in HTML format. In CF7, theres's a checkbox at the bottom of each mail configuration to do that.
 
 Then verify that the image is wrapped in an HTML image tag in your mail configuration, like this :
+
 `<img src="[your-signature-field]"/>`
 
 = And what if i want to use a Base64 encoded inline image in my email instead ?  =
@@ -78,16 +79,20 @@ This is not a very good idea, but just in case this is your only solution :
 When building your signature field with CF7's field generator, you have several options you can add to the field shortcode :
 
 Width and height :
+
 `[signature signature-666 333x222]`
+
 Will tell the plugin to draw the field 333px wide and 222px tall.
 
 ID and class :
+
 `[signature signature-666 id:foo class:bar]`
 
 = How do i add styles to my signature field ? =
 
 Use CSS like you would do for any other field in your form. 
 For example, using the field wrapper, you can add a border like this : 
+
 ```
 .wpcf7-form-control-signature-body canvas{
 	border: 1px dotted #BADA55;
@@ -99,6 +104,7 @@ For example, using the field wrapper, you can add a border like this :
 It depends on your form layout but once again, you can do this by using basic CSS instructions. The plugin will deal with window size and device orientation automatically updating itself to match the right size.
 
 The only thing you have to do is override width and/or height styles *to the field wrapper, not the canvas*, like this :
+
 ```
 @media screen and (max-width: 768px) {
     .wpcf7-form-control-signature-wrap {
@@ -117,6 +123,7 @@ There are options for that in the field settings (only hex color supported for t
 = The field is not working well after my desktop browser window was resized or after orientation change on my mobile. How can i fix that ? =
 
 The signature field needs to be "reloaded" too when its container's size changes, but you should be aware that it will also clear its content. I assume this is your responsability to do so. The plugin provides a jQuery function that you can call from your theme's script file :
+
 ```
 window.onresize = function(){
     $('div.wpcf7 > form').wpcf7ResizeSignatures();
