@@ -95,13 +95,13 @@ class Wpcf7_Signature_Mail {
 
 										if (strpos($tag->type, 'signature') !== false) {
 
-											// $filename = explode('wpcf7_signatures/',$data);
+											$filename = explode('wpcf7_signatures/',$data);
 
 											// File exists ?
-											if (file_exists($signature_dir.$data)) {
+											if (file_exists($signature_dir.$filename[1])) {
 
 												// Adding file as attachment
-												$components['attachments'][] = $signature_dir.$data;
+												$components['attachments'][] = $signature_dir.$filename[1];
 											}
 										}
 									}
@@ -200,8 +200,8 @@ class Wpcf7_Signature_Mail {
 
 			        if (file_exists($filepath)){
 
-			        	// $fileurl = $this->signature_url($filename);
-		        		$posted_data[$key] = $filename;
+			        	$fileurl = $this->signature_url($filename);
+		        		$posted_data[$key] = $fileurl;
 
 			        }else{
 			        	error_log("Cannot create signature file : ".$filepath);
