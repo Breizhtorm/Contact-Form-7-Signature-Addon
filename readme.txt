@@ -1,11 +1,11 @@
 === Contact Form 7 Signature Addon ===
-Plugin URI: http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html
-Donate link: http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html
-Contributors: tameroski
+Plugin URI: https://www.breizhtorm.fr/blog/une-simple-griffe
+Authors: breizhtorm
+Contributors: breizhtorm, tameroski
 Tags: Contact Form 7, form, forms, contactform7, contact form, signature pad, sig, signature field, cf7, handwriting, write
 Requires at least: 3.9
-Tested up to: 5.0
-Stable tag: 4.2.1
+Tested up to: 5.2.2
+Stable tag: 4.2.2
 
 Easily add an handwritten signature field to Contact Form 7
 
@@ -30,8 +30,6 @@ You can ask for support [here](http://wordpress.org/support/plugin/contact-form-
 
 = Be kind =
 This plugin is just sharing the result of something i needed once for a project, there's nothing commercial in there. But i'll listen to your requests and do my best to keep the plugin up to date anyway.
-
-Don't forget to rate the plugin if you like it (or not). You can even make a small donation [here](http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html).
 
 == Installation ==
 
@@ -95,7 +93,7 @@ For example, using the field wrapper, you can add a border like this :
 
 ```
 .wpcf7-form-control-signature-body canvas{
-	border: 1px dotted #BADA55;
+    border: 1px dotted #BADA55;
 }
 ```
 
@@ -149,6 +147,9 @@ Available methods are now :
 So you only have to replace the former functions by these new ones. Don't forget to have a look at your contact form *additional settings* tab, where there's usually some code to clear the fields on submit.
 
 == Changelog ==
+
+= 4.2.1 =
+* Bugfix : File attachment issues
 
 = 4.2.1 =
 * Better compatibility with other CF7 plugins

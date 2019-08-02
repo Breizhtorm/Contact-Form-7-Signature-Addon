@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html
+ * @link       https://github.com/Breizhtorm/Contact-Form-7-Signature-Addon
  * @since      4.0.0
  *
  * @package    Wpcf7_Signature
@@ -19,7 +19,7 @@
  *
  * @package    Wpcf7_Signature
  * @subpackage Wpcf7_Signature/includes
- * @author     Breizhtorm <tameroski@gmail.com>
+ * @author     Breizhtorm <web@breizhtorm.fr>
  */
 class Wpcf7_Signature_Loader {
 

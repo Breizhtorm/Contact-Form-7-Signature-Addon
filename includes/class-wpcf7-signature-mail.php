@@ -69,36 +69,49 @@ class Wpcf7_Signature_Mail {
 					$mail = $contact_form->prop($mail->name());
 					$new_attachments = $mail['attachments'];
 
+					$signature_dir = trailingslashit($this->signature_dir());
+
 					// Getting attachments one by one in mail configuration
-					$attachments = preg_split("/\\r\\n|\\r|\\n/", $mail['attachments']);
+					$attachments = preg_split('/[\s,\]]+/', $mail['attachments']);
 
 					foreach ($attachments as $attachment) {
 
-						preg_match_all("/\[(.*?)\]/", $attachment, $attachment_names);
+						if ($attachment != '') {
 
-						foreach ($attachment_names[1] as $attachment_name) {
-							$data = $submission->get_posted_data($attachment_name);
+							$attachment .= ']';
 
-							// Is is matching a signature tag ?
-							$tags = $contact_form->scan_form_tags();
-							foreach ($tags as $tag) {
-								if (("signature" == $tag['type'] || "signature*" == $tag['type'])  && $tag['name'] == $attachment_name){
-									
-									// File exists ?
-									if (@file_exists($data)){
+							preg_match_all("/\[(.*?)\]/", $attachment, $attachment_names);
 
-										// Adding file as attachment
-										$components['attachments'][] = $data;
+							foreach ($attachment_names[1] as $attachment_name) {
+
+								$data = $submission->get_posted_data($attachment_name);
+
+								// Is is matching a signature tag ?
+								$tags = $contact_form->scan_form_tags();
+
+								foreach ($tags as $tag) {
+
+									if ($tag->name == $attachment_name) {
+
+										if (strpos($tag->type, 'signature') !== false) {
+
+											// $filename = explode('wpcf7_signatures/',$data);
+
+											// File exists ?
+											if (file_exists($signature_dir.$data)) {
+
+												// Adding file as attachment
+												$components['attachments'][] = $signature_dir.$data;
+											}
+										}
 									}
 								}
 							}
 						}
-						
 					}
 				}
 			}
 		}
-
 		return $components;
 	}
 
@@ -133,6 +146,7 @@ class Wpcf7_Signature_Mail {
 		        $is_attachment = $posted_data[$key."-attachment"] == 1;
 
 		        if ($is_attachment){
+
 		        	// Preparing to send signature as attachement
 
 		        	wpcf7_init_uploads(); // Confirm upload dir
@@ -186,8 +200,8 @@ class Wpcf7_Signature_Mail {
 
 			        if (file_exists($filepath)){
 
-			        	$fileurl = $this->signature_url($filename);
-		        		$posted_data[$key] = $fileurl;
+			        	// $fileurl = $this->signature_url($filename);
+		        		$posted_data[$key] = $filename;
 
 			        }else{
 			        	error_log("Cannot create signature file : ".$filepath);

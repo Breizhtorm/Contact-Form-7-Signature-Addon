@@ -3,7 +3,7 @@
 /**
  * Fired when the plugin is uninstalled.
  *
- * @link       http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html
+ * @link       https://github.com/Breizhtorm/Contact-Form-7-Signature-Addon
  * @since      4.0.0
  *
  * @package    Wpcf7_Signature

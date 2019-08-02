@@ -2,22 +2,22 @@
 /**
  * Contact Form 7 Signature Addon
  *
- * @link              http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html
+ * @link              https://github.com/Breizhtorm/Contact-Form-7-Signature-Addon
  * @since             4.0.0
  * @package           Wpcf7_Signature
  *
  * @wordpress-plugin
  * Plugin Name: Contact Form 7 Signature Addon
- * Plugin URI: http://www.keybored.fr/2016/08/14/WP-Contact-Form-Signature-Field.html
+ * Plugin URI: https://github.com/Breizhtorm/Contact-Form-7-Signature-Addon
  * Description: Add a signature field type to the popular Contact Form 7 plugin.
  * Author: Breizhtorm
  * Author URI: http://www.breizhtorm.fr
- * Version: 4.2.1
+ * Version: 4.2.2
  * Text Domain: contact-form-7-signature-addon
  * Domain Path: /languages
 */
 
-define( 'WPCF7_SIGNATURE_VERSION', '4.2.1' );
+define( 'WPCF7_SIGNATURE_VERSION', '4.2.2' );
 define( 'WPCF7_SIGNATURE_PLUGIN_NAME', 'contact-form-7-signature-addon' );
 
 // If this file is called directly, abort.
