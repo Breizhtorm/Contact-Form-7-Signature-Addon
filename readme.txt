@@ -148,7 +148,7 @@ So you only have to replace the former functions by these new ones. Don't forget
 
 == Changelog ==
 
-= 4.2.1 =
+= 4.2.2 =
 * Bugfix : File attachment issues
 
 = 4.2.1 =

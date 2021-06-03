@@ -184,7 +184,7 @@ class Wpcf7_Signature_Public {
 		$atts_inline = wpcf7_format_atts( $atts_inline );
 
 		$html = sprintf(
-			'<div class="wpcf7-form-control-signature-global-wrap" data-field-id="%1$s">
+			'<div class="wpcf7-form-control-signature-global-wrap wpcf7-form-control-wrap" data-field-id="%1$s">
 				<div class="wpcf7-form-control-signature-wrap" style="width:%5$spx;height:%6$spx;">
 					<div class="wpcf7-form-control-signature-body">
 						<canvas %8$s></canvas>
@@ -195,7 +195,8 @@ class Wpcf7_Signature_Public {
 				</div>
 			</div>
 			<span class="wpcf7-form-control-wrap wpcf7-form-control-signature-input-wrap %1$s">
-				<input %2$s id="wpcf7_input_%1$s"/><input %9$s id="wpcf7_input_%1$s_attachment"/><input %10$s id="wpcf7_input_%1$s_inline"/>%3$s
+				  <input %2$s id="wpcf7_input_%1$s" class="wpcf7-form-control wpcf7-signature" /><input %9$s id="wpcf7_input_%1$s_attachment" class="wpcf7-form-control wpcf7-signature" /><input %10$s id="wpcf7_input_%1$s_inline" class="wpcf7-form-control wpcf7-signature" />%3$s
+				
 			</span>
 			',
 			sanitize_html_class( $tag->name ), $atts, $validation_error, $tag->name, $width, $height, __( 'Clear', 'contact-form-7-signature-addon' ), $atts_canvas, $atts_attach, $atts_inline );
@@ -217,12 +218,12 @@ class Wpcf7_Signature_Public {
 			? trim( wp_unslash( strtr( (string) $_POST[$name], "\n", " " ) ) )
 			: '';
 
-		if ( 'signature*' == $tag->type ) {
-			if ( '' == $value ) {
+		if ( 'signature' == $tag->basetype ) {
+			if ( $tag->is_required() and '' === $value ) {
 				if (method_exists($result,"invalidate")){
 					$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
 					return $result;
-				}else{
+				} elseif ( '' !== $value ) {
 					$result['valid'] = false;
 					$result['reason'][$name] = wpcf7_get_message( 'invalid_required' );
 				}

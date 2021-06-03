@@ -53,7 +53,12 @@ var signatures = [];
 				$clear.on("mouseup", function(){
 					sigObj.change();
 				});
-
+				
+				// Custom Event Listener to populate signature data before submit.
+				$(form).find('input.wpcf7-submit').on('mouseover', function() {
+					sigObj.beforeSubmit();
+				});
+				
 				// Submit Event Listener
 				$(form).on('submit', function(){
 					sigObj.beforeSubmit();
